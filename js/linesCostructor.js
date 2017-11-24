@@ -36,7 +36,7 @@ scene.appendChild(line);
 
 var curve=document.createElement('a-draw-curve');
 curve.setAttribute('curveref','#line');
-curve.setAttribute('material','shader: line; color: blue');
+
 curve.setAttribute('class','collidable');
 curve.setAttribute('collider-check');
 scene.appendChild(curve);
@@ -45,15 +45,12 @@ console.log("ho finito");
 var sp= document.createElement('a-sphere');
 sp.setAttribute('visible', false);
 sp.setAttribute('radius', '1');
-var raycaster=new THREE.Raycaster;
-
-var camera=document.querySelector('#camera');
-camera.appendChild(raycaster);
+scene.appendChild(sp);
+var raycaster=document.querySelector('#rc');
 
 curve.addEventListener('raycaster-intersected', function(){
     console.log('collisione');
     sp.setAttribute('visible',true);
-    sp.setAttribute('position', raycaster.intersectObject(scene.children).position);
 })
 
 /*var intersects=raycaster.intersectEls(curve, true);
