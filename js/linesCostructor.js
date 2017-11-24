@@ -48,8 +48,13 @@ sp.setAttribute('radius', '0.3');
 scene.appendChild(sp);
 var raycaster=document.querySelector('#rc');
 
+curve.addEventListener('raycaster-intersected', (e) =>{
+    console.log(e.detail.intersection.point);
+    sp.setAttribute('visible', true);
+    sp.setAttribute('position', e.detail.intersection.point);
+})
 
-curve.addEventListener('raycaster-intersected', (e) => console.log(e.detail.intersection.point));
+//curve.addEventListener('raycaster-intersected', (e) => console.log(e.detail.intersection.point));
 
 /*var intersects=raycaster.intersectEls(curve, true);
 var currentIntersected
