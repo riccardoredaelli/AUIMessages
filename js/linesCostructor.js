@@ -44,14 +44,12 @@ console.log("ho finito");
 
 var sp= document.createElement('a-sphere');
 sp.setAttribute('visible', false);
-sp.setAttribute('radius', '1');
+sp.setAttribute('radius', '0.3');
 scene.appendChild(sp);
 var raycaster=document.querySelector('#rc');
 
-curve.addEventListener('raycaster-intersected', function(){
-    console.log('collisione');
-    sp.setAttribute('visible',true);
-})
+
+curve.addEventListener('raycaster-intersected', (e) => console.log(e.detail.intersection.point));
 
 /*var intersects=raycaster.intersectEls(curve, true);
 var currentIntersected
