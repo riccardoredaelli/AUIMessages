@@ -1,79 +1,78 @@
+console.log("sono dentro");
+var scene= document.querySelector('#scene');
+//var numOfcurves= input;
+var line= document.createElement('a-curve');
+line.setAttribute('id','line');
+
+var startingPoint=document.createElement('a-curve-point');
+startingPoint.setAttribute('position','-4 1 -3');
+var s=document.createElement('a-sphere');
+s.setAttribute('radius','1');
+startingPoint.appendChild(s);
+
+var point1=document.createElement('a-curve-point');
+
+var x= Math.random()*10 -5;
+point1.setAttribute('position.x',x);
+console.log("posizione x "+ x + "\n");
 
 
-var geometry = new THREE.SphereGeometry( 5 );
-var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-var container= document.querySelector('#scene');
-var sky= document.querySelector('#sky');
+var y = Math.random()*10 -5;
+point1.setAttribute('position.y',y);
+console.log("posizione y "+ y + "\n");
 
-init();
+var z = Math.random()*10*(-1)-3;
+point1.setAttribute('position.z',z);
+console.log("posizione z "+ z + "\n");
 
-function init(){
-    var container, stats;
-    var camera, scene, raycaster, renderer, parentTransform, sphereInter;
-    
-    camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xf0f0f0 );
-    var geometry = new THREE.SphereGeometry( 5 );
-    var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-    sphereInter = new THREE.Mesh( geometry, material );
-    sphereInter.visible = false;
-    scene.add( sphereInter );
-    
-    
-    var geometry = new THREE.Geometry();
-    var point = new THREE.Vector3();
-    var direction = new THREE.Vector3();
-    
-    
-    for ( var i = 0; i < 50; i ++ ) {
-        direction.x += Math.random() - 0.5;
-        direction.y += Math.random() - 0.5;
-        direction.z += Math.random() - 0.5;
-					
-        direction.normalize().multiplyScalar( 10 );
-        point.add( direction );
-        geometry.vertices.push( point.clone() );
-        
-    }
-    
-    parentTransform = new THREE.Object3D();
-    
-    parentTransform.position.x = Math.random() * 40 - 20;
-    parentTransform.position.y = Math.random() * 40 - 20;
-    parentTransform.position.z = Math.random() * 40 - 20;
-    
-    parentTransform.rotation.x = Math.random() * 2 * Math.PI;
-    parentTransform.rotation.y = Math.random() * 2 * Math.PI;
-    parentTransform.rotation.z = Math.random() * 2 * Math.PI;
-    
-    parentTransform.scale.x = Math.random() + 0.5;
-    parentTransform.scale.y = Math.random() + 0.5;
-    parentTransform.scale.z = Math.random() + 0.5;
-    
-    for ( var i = 0; i < 50; i ++ ) {
-        var object;
-        if ( Math.random() > 0.5 ) {
-				object = new THREE.Line( geometry );
+var endingPoint=document.createElement('a-curve-point');
+endingPoint.setAttribute('position','4 2 -3');
+
+line.appendChild(startingPoint);
+line.appendChild(point1);
+line.appendChild(endingPoint);
+
+scene.appendChild(line);
+
+var curve=document.createElement('a-draw-curve');
+curve.setAttribute('curveref','#line');
+curve.setAttribute('material','shader: line; color: blue');
+curve.setAttribute('class','collidable');
+curve.setAttribute('collider-check');
+scene.appendChild(curve);
+console.log("ho finito");
+
+var sp= document.createElement('a-sphere');
+sp.setAttribute('visible', false);
+sp.setAttribute('radius', '1');
+var raycaster=new THREE.Raycaster;
+
+var camera=document.querySelector('#camera');
+camera.appendChild(raycaster);
+
+curve.addEventListener('raycaster-intersected', function(){
+    console.log('collisione');
+    sp.setAttribute('visible',true);
+    sp.setAttribute('position', raycaster.intersectObject(scene.children).position);
+})
+
+/*var intersects=raycaster.intersectEls(curve, true);
+var currentIntersected
+curve.addEventListener('raycaster-intersected',function(){
+   if ( intersects.length > 0 ) {
+       if ( currentIntersected !== undefined ) {
+           currentIntersected.material.linewidth = 1;
+		}
+       currentIntersected = intersects[ 0 ].object;
+       currentIntersected.material.linewidth = 5;
+       sp.visible = true;
+       sp.position.copy( intersects[ 0 ].point );
         } else {
-                object = new THREE.LineSegments( geometry );
-        }
-    object.position.x = Math.random() * 400 - 200;
-    object.position.y = Math.random() * 400 - 200;
-    object.position.z = Math.random() * 400 - 200;
-    object.rotation.x = Math.random() * 2 * Math.PI;
-    object.rotation.y = Math.random() * 2 * Math.PI;
-    object.rotation.z = Math.random() * 2 * Math.PI;
-    object.scale.x = Math.random() + 0.5;
-    object.scale.y = Math.random() + 0.5;
-    object.scale.z = Math.random() + 0.5;
-    parentTransform.add( object );
-        }
-    
-    scene.add( parentTransform );
-        raycaster = new THREE.Raycaster();
-        raycaster.linePrecision = 3;
-        renderer = new THREE.WebGLRenderer( { antialias: true } );
-        renderer.setPixelRatio( window.devicePixelRatio );
-        renderer.setSize( window.innerWidth, window.innerHeight );
-}
+            if ( currentIntersected !== undefined ) {
+                currentIntersected.material.linewidth = 1;
+            }
+            currentIntersected = undefined;
+            sp.visible = false;
+            }
+       // renderer.render( scene, camera );
+})*/
