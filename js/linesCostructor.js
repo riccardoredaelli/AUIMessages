@@ -5,12 +5,9 @@ var line= document.createElement('a-curve');
 line.setAttribute('id','line');
 
 var startingPoint=document.createElement('a-curve-point');
-startingPoint.setAttribute('position','-4 1 -3');
-var s=document.createElement('a-sphere');
-s.setAttribute('radius','1');
-startingPoint.appendChild(s);
+startingPoint.setAttribute('position','-10 0 -5');
 
-var point1=document.createElement('a-curve-point');
+/*var point1=document.createElement('a-curve-point');
 
 var x= Math.random()*10 -5;
 point1.setAttribute('position.x',x);
@@ -23,13 +20,20 @@ console.log("posizione y "+ y + "\n");
 
 var z = Math.random()*10*(-1)-3;
 point1.setAttribute('position.z',z);
-console.log("posizione z "+ z + "\n");
+console.log("posizione z "+ z + "\n");*/
+
+var point1=document.createElement('a-curve-point');
+point1.setAttribute('position','0 0 -5');
+
+var point2=document.createElement('a-curve-point');
+point2.setAttribute('position','0 0 -5');
 
 var endingPoint=document.createElement('a-curve-point');
-endingPoint.setAttribute('position','4 2 -3');
+endingPoint.setAttribute('position','10 0 -5');
 
 line.appendChild(startingPoint);
 line.appendChild(point1);
+line.appendChild(point2);
 line.appendChild(endingPoint);
 
 scene.appendChild(line);
@@ -47,11 +51,34 @@ sp.setAttribute('visible', false);
 sp.setAttribute('radius', '0.3');
 scene.appendChild(sp);
 var raycaster=document.querySelector('#rc');
+var intersected=Boolean;
+intersected=false;
 
 curve.addEventListener('raycaster-intersected', (e) =>{
-    console.log(e.detail.intersection.point);
+    intersected=true;
     sp.setAttribute('visible', true);
-    sp.setAttribute('position', e.detail.intersection.point);
+    sp.setAttribute('color', 'yellow');
+    curve.addEventListener('mouseenter', function(){
+            if(intersected==true){
+                sp.setAttribute('color', 'green');
+                sp.setAttribute('position', e.detail.intersection.point);
+                
+                curve.addEventListener('mouseup', function(){
+                    if (intersected==true){
+                        sp.setAttribute('color','yellow');
+                        return;
+                    }
+                    else
+                        sp.setAttribute('color','red');
+                })
+            return;
+            }
+            else return;
+    })
+})
+
+curve.addEventListener('raycaster-intersected-cleared', function(){
+    intersected=false;
 })
 
 //curve.addEventListener('raycaster-intersected', (e) => console.log(e.detail.intersection.point));
