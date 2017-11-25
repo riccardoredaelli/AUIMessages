@@ -1,4 +1,4 @@
-console.log("sono dentro");
+
 var scene= document.querySelector('#scene');
 //var numOfcurves= input;
 var line= document.createElement('a-curve');
@@ -54,16 +54,19 @@ var raycaster=document.querySelector('#rc');
 var intersected=Boolean;
 intersected=false;
 
-curve.addEventListener('raycaster-intersected', (e) =>{
+curve.addEventListener('raycaster-intersected', function(){
     intersected=true;
+    console.log('raggi intersecati e intersected= '+ intersected);
+})
+
+curve.addEventListener('raycaster-intersected', (e) =>{
     sp.setAttribute('visible', true);
     sp.setAttribute('color', 'yellow');
-    curve.addEventListener('mouseenter', function(){
+    curve.addEventListener('trackpaddown', function(){
             if(intersected==true){
                 sp.setAttribute('color', 'green');
-                sp.setAttribute('position', e.detail.intersection.point);
-                
-                curve.addEventListener('mouseup', function(){
+                sp.setAttribute('position', e.detail.intersection.point); 
+                curve.addEventListener('trackpadup', function(){
                     if (intersected==true){
                         sp.setAttribute('color','yellow');
                         return;
@@ -79,6 +82,7 @@ curve.addEventListener('raycaster-intersected', (e) =>{
 
 curve.addEventListener('raycaster-intersected-cleared', function(){
     intersected=false;
+    console.log('raggi non più intersecati e intersected= '+ intersected);
 })
 
 //curve.addEventListener('raycaster-intersected', (e) => console.log(e.detail.intersection.point));
