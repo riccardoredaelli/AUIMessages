@@ -9,10 +9,17 @@
  
 <body>
   <a-scene id="scene">
-      <a-camera id="camera">
-        <a-cursor></a-cursor>
-            <a-entity id='rc' raycaster="objects: .collidable; showLine: true; far: 30" position='0 -1 0' radius='0.1'></a-entity>
-      </a-camera>
+    <a-assets>
+        <a-asset-item id="your-obj" src="models/House/House.obj"></a-asset-item>
+        <a-asset-item id="your-mtl" src="models/House/House.mtl"></a-asset-item>
+    </a-assets>
+    <a-entity id='casa' obj-model="obj: #your-obj; mtl: #your-mtl" position='1 1 -10' scale="4 4 4"></a-entity>
+      
+    <a-camera id="camera">
+    <a-cursor></a-cursor>
+        <a-entity id='rc' raycaster="objects: .collidable; showLine: true; interval:10" position='0 0 0' radius='0.1'></a-entity>
+    </a-camera>
   </a-scene>
+<script src='js/sceneConstructor.js'></script>
 <script src="js/linesCostructor.js"></script>
 </body>

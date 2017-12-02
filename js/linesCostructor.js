@@ -1,85 +1,55 @@
 
-var scene= document.querySelector('#scene');
-//var numOfcurves= input;
-var line= document.createElement('a-curve');
-line.setAttribute('id','line');
-
-var startingPoint=document.createElement('a-curve-point');
-startingPoint.setAttribute('position','-20 5 -15');
-
-/*var point1=document.createElement('a-curve-point');
-
-var x= Math.random()*10 -5;
-point1.setAttribute('position.x',x);
-console.log("posizione x "+ x + "\n");
-
-
-var y = Math.random()*10 -5;
-point1.setAttribute('position.y',y);
-console.log("posizione y "+ y + "\n");
-
-var z = Math.random()*10*(-1)-3;
-point1.setAttribute('position.z',z);
-console.log("posizione z "+ z + "\n");*/
-
-var point1=document.createElement('a-curve-point');
-point1.setAttribute('position','-15 10 -15');
-
-var point2=document.createElement('a-curve-point');
-point2.setAttribute('position','8 15 -15');
-
-var endingPoint=document.createElement('a-curve-point');
-endingPoint.setAttribute('position','20 5 -15');
-
-line.appendChild(startingPoint);
-line.appendChild(point1);
-line.appendChild(point2);
-line.appendChild(endingPoint);
-
-scene.appendChild(line);
-
-var curve=document.createElement('a-draw-curve');
-curve.setAttribute('curveref','#line');
-
-curve.setAttribute('class','collidable');
-curve.setAttribute('collider-check');
-scene.appendChild(curve);
-console.log("ho finito");
 
 var sp= document.createElement('a-sphere');
+sp.setAttribute('radius', '0.5');
 sp.setAttribute('visible', false);
-sp.setAttribute('radius', '0.3');
 sp.setAttribute('color', 'yellow');
-scene.appendChild(sp);
-var raycaster=document.querySelector('#rc');
-var intersected=Boolean;
-intersected=false;
 
-curve.addEventListener('raycaster-intersected', e=>{
-    intersected=true;
-    sp.setAttribute('visible', true);
-    curve.addEventListener('mouseenter', function(){
-console.log('MOUSEENTER----intersected= '+ intersected);                    
-            if(intersected==true){
-                sp.setAttribute('color', 'green');
-                sp.setAttribute('position', e.detail.intersection.point); 
-                curve.addEventListener('mouseup', function(){
-console.log('MOUSEUP----intersected= '+ intersected);                    
-                    if (intersected==true){
-                        sp.setAttribute('color','yellow');
-                        return;
-                    }                       
-                })
-            return;
-            }
-            else return;
-    })
+var spStop= document.createElement('a-sphere');
+spStop.setAttribute('radius', '1');
+spStop.setAttribute('visible', true);
+spStop.setAttribute('color', 'red');
+spStop.setAttribute('position', '-20 5 -15');
+
+
+scene.appendChild(sp);
+scene.appendChild(spStop);
+var raycaster=document.querySelector('#rc');
+var mouse=Boolean;
+mouse=false;
+raycaster.setAttribute('objects','#curve');
+var curve=document.querySelector('#curve');
+
+
+
+scene.addEventListener('mousedown', function(){
+    mouse=true;
+    console.log('mouse cliccato e var mouse= '+ mouse);
 })
 
+
+scene.addEventListener('mouseup', function(){
+    mouse=false;
+    console.log('mouse rilasciato e var mouse= '+ mouse);        
+})
+
+curve.addEventListener('raycaster-intersected', e=>{
+    spStop.setAttribute('visible', false);
+    console.log('intersection');
+    sp.setAttribute('visible', true);
+    sp.setAttribute('position', e.detail.intersection.point);
+
+})
+
+
+
 curve.addEventListener('raycaster-intersected-cleared', function(){
-    intersected=false;
-    sp.setAttribute('color','red');
-    console.log('raggi non più intersecati e intersected= '+ intersected);
+    spStop.setAttribute('visible', true);
+    console.log('visibile!');
+    spStop.setAttribute('position', sp.getDOMAttribute('position'));
+    console.log('intersection cleared');
+    sp.setAttribute('visible', false);
+ 
 })
 
 /*curve.addEventListener('raycaster-intersected', function(){
