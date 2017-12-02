@@ -5,7 +5,7 @@ var line= document.createElement('a-curve');
 line.setAttribute('id','line');
 
 var startingPoint=document.createElement('a-curve-point');
-startingPoint.setAttribute('position','-10 0 -5');
+startingPoint.setAttribute('position','-20 5 -15');
 
 /*var point1=document.createElement('a-curve-point');
 
@@ -23,13 +23,13 @@ point1.setAttribute('position.z',z);
 console.log("posizione z "+ z + "\n");*/
 
 var point1=document.createElement('a-curve-point');
-point1.setAttribute('position','0 0 -5');
+point1.setAttribute('position','-15 10 -15');
 
 var point2=document.createElement('a-curve-point');
-point2.setAttribute('position','0 0 -5');
+point2.setAttribute('position','8 15 -15');
 
 var endingPoint=document.createElement('a-curve-point');
-endingPoint.setAttribute('position','10 0 -5');
+endingPoint.setAttribute('position','20 5 -15');
 
 line.appendChild(startingPoint);
 line.appendChild(point1);
@@ -49,24 +49,55 @@ console.log("ho finito");
 var sp= document.createElement('a-sphere');
 sp.setAttribute('visible', false);
 sp.setAttribute('radius', '0.3');
+sp.setAttribute('color', 'yellow');
 scene.appendChild(sp);
 var raycaster=document.querySelector('#rc');
 var intersected=Boolean;
 intersected=false;
 
-curve.addEventListener('raycaster-intersected', function(){
+curve.addEventListener('raycaster-intersected', e=>{
+    intersected=true;
+    sp.setAttribute('visible', true);
+    curve.addEventListener('mouseenter', function(){
+console.log('MOUSEENTER----intersected= '+ intersected);                    
+            if(intersected==true){
+                sp.setAttribute('color', 'green');
+                sp.setAttribute('position', e.detail.intersection.point); 
+                curve.addEventListener('mouseup', function(){
+console.log('MOUSEUP----intersected= '+ intersected);                    
+                    if (intersected==true){
+                        sp.setAttribute('color','yellow');
+                        return;
+                    }                       
+                })
+            return;
+            }
+            else return;
+    })
+})
+
+curve.addEventListener('raycaster-intersected-cleared', function(){
+    intersected=false;
+    sp.setAttribute('color','red');
+    console.log('raggi non più intersecati e intersected= '+ intersected);
+})
+
+/*curve.addEventListener('raycaster-intersected', function(){
     intersected=true;
     console.log('raggi intersecati e intersected= '+ intersected);
 })
 
 curve.addEventListener('raycaster-intersected', (e) =>{
+    intersected=true;
     sp.setAttribute('visible', true);
     sp.setAttribute('color', 'yellow');
-    curve.addEventListener('trackpaddown', function(){
+    curve.addEventListener('mouseenter', function(){
+console.log('MOUSEENTER----intersected= '+ intersected);                    
             if(intersected==true){
                 sp.setAttribute('color', 'green');
                 sp.setAttribute('position', e.detail.intersection.point); 
-                curve.addEventListener('trackpadup', function(){
+                curve.addEventListener('mouseup', function(){
+console.log('MOUSEUP----intersected= '+ intersected);                    
                     if (intersected==true){
                         sp.setAttribute('color','yellow');
                         return;
@@ -83,7 +114,7 @@ curve.addEventListener('raycaster-intersected', (e) =>{
 curve.addEventListener('raycaster-intersected-cleared', function(){
     intersected=false;
     console.log('raggi non più intersecati e intersected= '+ intersected);
-})
+})*/
 
 //curve.addEventListener('raycaster-intersected', (e) => console.log(e.detail.intersection.point));
 
