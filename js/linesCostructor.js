@@ -1,6 +1,26 @@
 
+// funzione per mettere insieme due event listener o più 
+function addMultipleListeners(element,events,handler,useCapture,args){
+  if (!(events instanceof Array)){
+    throw 'addMultipleListeners: '+
+          'please supply an array of eventstrings '+
+          '(like ["click","mouseover"])';
+  }
+  //create a wrapper to be able to use additional arguments
+  var handlerFn = function(e){
+    handler.apply(this, args && args instanceof Array ? args : []);
+  }
+  for (var i=0;i<events.length;i+=1){
+    element.addEventListener(events[i],handlerFn,useCapture);
+  }
+}
+
 
 var sp= document.createElement('a-sphere');
+sp.setAttribute('dynamic-body', {
+  mass: 1.5,
+  linearDamping: 0.005
+});
 sp.setAttribute('radius', '0.5');
 sp.setAttribute('visible', false);
 sp.setAttribute('color', 'yellow');
@@ -10,6 +30,8 @@ spStop.setAttribute('radius', '1');
 spStop.setAttribute('visible', true);
 spStop.setAttribute('color', 'red');
 spStop.setAttribute('position', '-20 5 -15');
+spStop.setAttribute('class','collidable');
+spStop.setAttribute('collider-check');
 
 
 scene.appendChild(sp);
@@ -42,6 +64,7 @@ curve.addEventListener('raycaster-intersected', e=>{
 })
 
 
+/*
 
 curve.addEventListener('raycaster-intersected-cleared', function(){
     spStop.setAttribute('visible', true);
@@ -52,7 +75,7 @@ curve.addEventListener('raycaster-intersected-cleared', function(){
  
 })
 
-/*curve.addEventListener('raycaster-intersected', function(){
+curve.addEventListener('raycaster-intersected', function(){
     intersected=true;
     console.log('raggi intersecati e intersected= '+ intersected);
 })
@@ -108,3 +131,30 @@ curve.addEventListener('raycaster-intersected',function(){
             }
        // renderer.render( scene, camera );
 })*/
+
+function handler(e) {
+    console.log('sono in handler');
+  spStop.setAttribute('color', 'green');
+};
+
+
+addMultipleListeners(
+    curve,
+    ['raycaster-intersected','mouseup'],
+    handler,
+    false);
+
+/*function fun(e){
+    console.log('esegue fun');
+    spStop.setAttribute('visible', true);
+    console.log('visibile!');
+    spStop.setAttribute('position', sp.getDOMAttribute('position'));
+    console.log('intersection cleared');
+    sp.setAttribute('visible', false);
+}
+
+addMultipleListeners(
+    curve,
+    ['raycaster-intersected','mouseup'],
+    fun,
+    false);*/
