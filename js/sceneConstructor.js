@@ -24,16 +24,16 @@ line.appendChild(endingPoint);
 
 scene.appendChild(line);
 
-var curve=document.createElement('a-draw-curve');
-curve.setAttribute('curveref','#line');
+var curve=document.createElement('a-cylinder');
+
 
 curve.setAttribute('class','collidable');
 curve.setAttribute('collider-check');
 curve.setAttribute('id','curve');
-curve.setAttribute('recursive',false);
+curve.setAttribute('height', "10");
+curve.setAttribute('radius', "1");
+curve.setAttribute('position', "0 0 -4");
 scene.appendChild(curve);
-
-console.log('posizione del initial point' + startingPoint.getAttribute('position'));
 
 var home=document.querySelector('#casa');
 home.setAttribute('position','20 5 -15' );

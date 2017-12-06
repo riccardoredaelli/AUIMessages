@@ -1,4 +1,3 @@
-
 // funzione per mettere insieme due event listener o più 
 function addMultipleListeners(element,events,handler,useCapture,args){
   if (!(events instanceof Array)){
@@ -17,7 +16,6 @@ function addMultipleListeners(element,events,handler,useCapture,args){
 
 
 var sp= document.createElement('a-sphere');
-
 sp.setAttribute('radius', '0.5');
 sp.setAttribute('visible', false);
 sp.setAttribute('color', 'yellow');

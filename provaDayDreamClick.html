@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+<title>My A-Frame Scene</title>
+<script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script> 
+<script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script> 
+<script src="js/three.js"></script>
+</head>
+ 
+<body>
+  <a-scene id="scene">
+    <a-sphere id="sp" radius="3" position="-6 4 -10" color="gray"></a-sphere>
+      
+        <a-entity id="camera" click-check daydream-controls="hand: right">
+            <a-entity id='rc' raycaster="showLine: true; interval:10; far:100" position='0 0 0' radius='0.1'></a-entity>
+        </a-entity>
+  </a-scene>
+    
+    
+    <script>
+        var sp=document.querySelector("#sp");
+        var camera=document.querySelector("#camera");
+        var focused= false;
+       
+        sp.addEventListener('raycaster-intersected', function () {
+            if (focused) return;
+            focused = true;
+            sp.setAttribute('color','green');
+        });
+        sp.addEventListener('raycaster-intersected-cleared', function () {
+            focused = false;
+            sp.setAttribute('color','orange');
+        });
+        camera.addEventListener('trackpaddown', function (e) {
+            sp.setAttribute('color','black');
+        });
+        camera.addEventListener('trackpadup', function (e) {
+            if (focused) {
+                sp.setAttribute('color','purple');
+            } else {
+                sp.setAttribute('color','orange');
+            }
+        });
+        
+    </script>
+</body>
