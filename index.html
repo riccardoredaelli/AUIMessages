@@ -10,52 +10,108 @@
 <body>
   <a-scene id="scene">
     <a-entity id="controller" daydream-controls="hand: right">
-         <a-entity id='rc' raycaster="showLine: true; interval:10; far:100" position='0 0 0' radius='0.1'></a-entity>
+         <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0'material='color: red'></a-entity>
     </a-entity>
       
-      <a-cylinder id="curve" position="0 0 -4" radius="0.2" height="15"></a-cylinder>
+      <a-cylinder class='clickable' id="cylinder" position="0 0 -4" radius="0.3" height="16" rotation='0 0 90' color='green'></a-cylinder>
   </a-scene>
 <script>
-
+    
 var focused=false;
 var controller=document.querySelector("#controller");
     
 var spStop= document.createElement('a-sphere');
-spStop.setAttribute('radius', '1');
+spStop.setAttribute('radius', '0.5');
 spStop.setAttribute('visible', true);
 spStop.setAttribute('color', 'red');
-spStop.setAttribute('position', '0 -5 -4');
-console.log("Creata sfera rossa visibile");
+spStop.setAttribute('position', '8 0 -4');
+spStop.setAttribute('class', 'clickable');
 
+var path= document.querySelector('#cylinder');
+var pathController= false;
+var raycaster= document.querySelector('#rc');
+var rayPosition;
+var spPosition;
+
+var r1= document.createElement('a-entity');
+r1.setAttribute('raycaster','objects: .clickable');
+r1.setAttribute('visible',false);
+    
 var scene=document.querySelector("#scene");
 scene.appendChild(spStop);
 
-    spStop.addEventListener('raycaster-intersected', function (e) {
-        if (focused) return;
-        focused = true;
-        spStop.setAttribute('color','green');
-        });
-    spStop.addEventListener('raycaster-intersected-cleared', function () {
-        focused = false;
-        spStop.setAttribute('position', e.detail.intersection.point);
-        spStop.setAttribute('color','red');
-    });
+spStop.addEventListener('raycaster-intersected', function (e) {
+    if (focused) return;
+    focused = true;
+    spStop.setAttribute('color','green');
+});
+    
+spStop.addEventListener('raycaster-intersected-cleared', function () {
+    focused = false;
+    spStop.setAttribute('color','red');
+});
 
-controller.addEventListener('trackpaddown', function raycaster(e) {
-    console.log("trackpad DOWN");
-    if(focused){
-        console.log('focused and trackpaddown');
-            spStop.setAttribute("visible", false)
-            
-            controller.addEventListener('trackpadup', function(){
-                console.log('focused and trackpadup');
-                spStop.setAttribute('position', sp.getDOMAttribute('position'));
-                spStop.setAttribute('visible',true);
-                curve.removeEventListener('raycaster-intersected-cleared', roadExit);
-                curve.removeEventListener('raycaster-intersected', raycaster);
-            })
+        
+path.addEventListener('raycaster-intersected', function changePathControllerToTrue(e){
+    console.log('intersezione');
+    rayPosition=e.detail.intersection.point;
+    scene.emit('rayPositionUpdated');
+    if (pathController) {
+        return;
     }
-})
+    pathController = true;
+});   
+  
+function changePathControllerToFalse() {
+    console.log('sei uscito dal percorso prima di rilasciare il pulsante!');
+    pathController = false;
+    spStop.setAttribute('position','8 0 -4');
+    spStop.setAttribute('visible','true');
+    path.setAttribute('color','green');   
+    scene.emit('finished');
+    return;
+}
 
+function updateSpherePosition(){
+    spPosition=rayPosition;
+    path.setAttribute('color', 'green');
+    spStop.setAttribute('visible', true);
+    spStop.setAttribute('position', spPosition);
+    controller.removeChild(r1);
+    scene.emit('updateFinished');
+}
+    
+function doTrackpadUp(){
+    console.log('trackpad rilasciato sul path');
+    controller.appendChild(r1); 
+    scene.addEventListener('rayPositionUpdated', updateSpherePosition);
+    scene.addEventListener('updateFinished', function(){
+            scene.removeEventListener('rayPositionUpdated', updateSpherePosition);
+    });
+    scene.emit('finished');
+    console.log('funzione trackpad up finita!');
+}
+    
+controller.addEventListener('trackpaddown', function() {
+    if(focused){
+        console.log('cliccato sulla pallina iniziale');
+        spStop.setAttribute("visible", false);
+        path.setAttribute('color', 'yellow');
+        
+        path.addEventListener('raycaster-intersected-cleared', changePathControllerToFalse);
+        
+        controller.addEventListener('trackpadup', doTrackpadUp);
+        
+        scene.addEventListener('finished', function closeEventListeners(){
+            controller.removeEventListener('trackpadup', doTrackpadUp);
+            path.removeEventListener('raycaster-intersected-cleared', changePathControllerToFalse);
+            console.log('evento emesso e rimossi i listener');
+        });
+        
+        
+    }
+    else return;
+});
+    
 </script>
 </body>
