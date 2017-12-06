@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<head>
+    <title>level selector</title>
+    <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script> 
+    <script src='js/three.js'></script>
+    <script src='js/raycaster.js'></script>
+</head>
+<body>
+    <a-scene id='scene'>
+        <a-text value="select your preferred level:" position='-1.2 1 -4' color='red'></a-text>
+        
+        <a-circle id='level1' color='green' position='-1 0 -4' radius='0.3'></a-circle>
+        <a-circle id='level2' color='yellow' position='0 0 -4' radius='0.3'></a-circle>
+        <a-circle id='level3' color='red'position='1 0 -4' radius='0.3'></a-circle>
+
+        <a-camera>
+        <a-cursor id='dc'>
+            <a-entity raycaster1='showLine: true; far: 10' id='rc' ></a-entity>
+        </a-cursor>
+         </a-camera>
+    </a-scene>
+    <script>
+        var c1=document.querySelector('#level1');
+        var c2=document.querySelector('#level2');
+        var c3=document.querySelector('#level3');
+        
+        var bol1=false;
+        var bol2=false;
+        var bol3=false;
+        
+        c1.addEventListener('raycaster-intersected', function(){
+            if(bol1) return;
+            bol1=true;
+            console.log('bol1= ' + bol1 + ' bol2= ' + bol2 + ' bol3= ' + bol3);
+        })
+        
+        c2.addEventListener('raycaster-intersected', function(){
+            if(bol2) return;
+            bol2=true;
+             console.log('bol1= ' + bol1 + ' bol2= ' + bol2 + ' bol3= ' + bol3);
+        })
+        
+        c3.addEventListener('raycaster-intersected', function(){
+            if(bol3) return;
+            bol3= true;
+             console.log('bol1= ' + bol1 + ' bol2= ' + bol2 + ' bol3= ' + bol3);
+        })
+        
+        c1.addEventListener('raycaster-intersected-cleared', function(){
+            bol1=false;
+        })
+        
+        c2.addEventListener('raycaster-intersected-cleared', function(){
+            bol2=false;
+        })
+        
+        c3.addEventListener('raycaster-intersected-cleared', function(){
+            bol3=false;
+        })
+        
+        var controller= document.querySelector('#dc');
+        
+        dc.addEventListener('mousedown', function(){
+            if(bol1){
+                console.log('livello1');
+                window.open('index1.html');
+            }
+            if(bol2) console.log('livello2');
+            if(bol3) console.log('livello3');
+            return;
+        })
+    </script>
+</body>
