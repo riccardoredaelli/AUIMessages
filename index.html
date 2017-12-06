@@ -13,32 +13,41 @@
          <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0'material='color: red'></a-entity>
     </a-entity>
       
-      <a-cylinder class='clickable' id="cylinder" position="0 0 -4" radius="0.3" height="16" rotation='0 0 90' color='green'></a-cylinder>
+      <a-cylinder class='clickable' id="cylinder" position="0 0 -4" radius="0.8" height="16" rotation='0 0 90' color='green'></a-cylinder>
   </a-scene>
 <script>
     
 var focused=false;
 var controller=document.querySelector("#controller");
-    
-var spStop= document.createElement('a-sphere');
-spStop.setAttribute('radius', '0.5');
-spStop.setAttribute('visible', true);
-spStop.setAttribute('color', 'red');
-spStop.setAttribute('position', '8 0 -4');
-spStop.setAttribute('class', 'clickable');
-
+var scene=document.querySelector("#scene");
 var path= document.querySelector('#cylinder');
 var pathController= false;
 var raycaster= document.querySelector('#rc');
 var rayPosition;
 var spPosition;
+    
+var arrival= document.createElement('a-sphere');
+arrival.setAttribute('radius', '1');
+arrival.setAttribute('visible', true);
+arrival.setAttribute('color', 'yellow');    
+arrival.setAttribute('class', 'clickable');
+arrival.setAttribute('position','-8 0 -4');
+    
+var spStop= document.createElement('a-sphere');
+spStop.setAttribute('radius', '1');
+spStop.setAttribute('visible', true);
+spStop.setAttribute('color', 'red');
+spStop.setAttribute('position', '8 0 -4');
+spStop.setAttribute('class', 'clickable');
 
+scene.appendChild(spStop);
+scene.appendChild(arrival);
+    
 var r1= document.createElement('a-entity');
 r1.setAttribute('raycaster','objects: .clickable');
 r1.setAttribute('visible',false);
     
-var scene=document.querySelector("#scene");
-scene.appendChild(spStop);
+
 
 spStop.addEventListener('raycaster-intersected', function (e) {
     if (focused) return;
@@ -61,7 +70,11 @@ path.addEventListener('raycaster-intersected', function changePathControllerToTr
     }
     pathController = true;
 });   
-  
+
+arrival.addEventListener('raycaster-intersected', function(){
+    scene.emit('winner');
+});
+    
 function changePathControllerToFalse() {
     console.log('sei uscito dal percorso prima di rilasciare il pulsante!');
     pathController = false;
@@ -72,11 +85,20 @@ function changePathControllerToFalse() {
     return;
 }
 
+function winnerFunction(){
+    console.log('intersecato sfera finale!!');
+    var scritta=document.createElement('a-text');
+    scritta.setAttribute('color', 'red');
+    scritta.setAttribute('position', '0 2 -4');
+    scritta.setAttribute('value', 'COMPLIMENTI! SEI RIUSCITO A FINIRE IL LIVELLO!!!!');
+    scene.appendChild(scritta);
+}
+    
 function updateSpherePosition(){
     spPosition=rayPosition;
     path.setAttribute('color', 'green');
     spStop.setAttribute('visible', true);
-    spStop.setAttribute('position', spPosition);
+    spStop.setAttribute('position', spPosition);    
     controller.removeChild(r1);
     scene.emit('updateFinished');
 }
@@ -98,11 +120,14 @@ controller.addEventListener('trackpaddown', function() {
         spStop.setAttribute("visible", false);
         path.setAttribute('color', 'yellow');
         
+        scene.addEventListener('winner', winnerFunction);
+        
         path.addEventListener('raycaster-intersected-cleared', changePathControllerToFalse);
         
         controller.addEventListener('trackpadup', doTrackpadUp);
         
         scene.addEventListener('finished', function closeEventListeners(){
+            scene.removeEventListener('winner', winnerFunction);
             controller.removeEventListener('trackpadup', doTrackpadUp);
             path.removeEventListener('raycaster-intersected-cleared', changePathControllerToFalse);
             console.log('evento emesso e rimossi i listener');
