@@ -1,25 +1,61 @@
 <!DOCTYPE html>
 <head>
-  <title>My A-Frame Scene</title>
-  <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script> 
-  <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script> 
-  <script src="js/collidable.js"></script>
+<title>Wivr</title>
+<script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script> 
+<script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script> 
+<script src="js/collidable.js"></script>
 <script src="js/three.js"></script>
 </head>
  
 <body>
   <a-scene id="scene">
-    <a-assets>
-        <a-asset-item id="your-obj" src="models/House/House.obj"></a-asset-item>
-        <a-asset-item id="your-mtl" src="models/House/House.mtl"></a-asset-item>
-    </a-assets>
-    <a-entity id='casa' obj-model="obj: #your-obj; mtl: #your-mtl" position='1 1 -10' scale="4 4 4"></a-entity>
+    <a-entity id="controller" daydream-controls="hand: right">
+         <a-entity id='rc' raycaster="showLine: true; interval:10; far:100" position='0 0 0' radius='0.1'></a-entity>
+    </a-entity>
       
-    <a-camera id="camera">
-    <a-cursor></a-cursor>
-        <a-entity id='rc' raycaster="showLine: true; interval:10" position='0 0 0' radius='0.1'></a-entity>
-    </a-camera>
+      <a-cylinder id="curve" position="0 0 -4" radius="0.2" height="15"></a-cylinder>
   </a-scene>
-<script src='js/sceneConstructor.js'></script>
-<script src="js/linesCostructor.js"></script>
+<script>
+
+var focused=false;
+var controller=document.querySelector("#controller");
+    
+var spStop= document.createElement('a-sphere');
+spStop.setAttribute('radius', '1');
+spStop.setAttribute('visible', true);
+spStop.setAttribute('color', 'red');
+spStop.setAttribute('position', '0 -5 -4');
+console.log("Creata sfera rossa visibile");
+
+var scene=document.querySelector("#scene");
+scene.appendChild(spStop);
+
+    spStop.addEventListener('raycaster-intersected', function (e) {
+        if (focused) return;
+        focused = true;
+        spStop.setAttribute('color','green');
+        });
+    spStop.addEventListener('raycaster-intersected-cleared', function () {
+        focused = false;
+        spStop.setAttribute('position', e.detail.intersection.point);
+        spStop.setAttribute('color','red');
+    });
+
+controller.addEventListener('trackpaddown', function raycaster(e) {
+    console.log("trackpad DOWN");
+    if(focused){
+        console.log('focused and trackpaddown');
+            spStop.setAttribute("visible", false)
+            
+            controller.addEventListener('trackpadup', function(){
+                console.log('focused and trackpadup');
+                spStop.setAttribute('position', sp.getDOMAttribute('position'));
+                spStop.setAttribute('visible',true);
+                curve.removeEventListener('raycaster-intersected-cleared', roadExit);
+                curve.removeEventListener('raycaster-intersected', raycaster);
+            })
+    }
+})
+
+</script>
 </body>
