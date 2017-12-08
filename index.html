@@ -9,10 +9,14 @@
  
 <body>
   <a-scene id="scene">
+    <a-assets>
+        <a-asset-item id="your-obj" src="models/House/House.obj"></a-asset-item>
+        <a-asset-item id="your-mtl" src="models/House/House.mtl"></a-asset-item>
+    </a-assets>
+    <a-entity id='casa' obj-model="obj: #your-obj; mtl: #your-mtl" position='1 1 -10' scale="4 4 4"></a-entity>
     <a-entity id="controller" daydream-controls="hand: right">
          <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0'material='color: red'></a-entity>
     </a-entity>
-      
       <a-cylinder class='clickable' id="cylinder" position="0 0 -4" radius="0.8" height="16" rotation='0 0 90' color='green'></a-cylinder>
   </a-scene>
 <script>
