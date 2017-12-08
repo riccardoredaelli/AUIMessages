@@ -23,33 +23,52 @@
         var scene=document.querySelector('#scene');
         var sky=document.querySelector('#sky');
         var rc=document.querySelector('#rc');
-        var path= new Array('cylinder', 'cylinder1');
-        var intersected= new Array();
+        var intersected= true;
+        var c1=document.querySelector('#cylinder');
+        var c2= document.querySelector('#cylinder1');
+        var countIntersections=0;
+        var path= new Array();
+        path[0]=c1;
+        path[1]=c2;
+        
+        
+        for(var i=0; i<2; i++){
+            path[i].addEventListener('raycaster-intersected', function(){
+            console.log('intersezione con il path');
+            countIntersections++;
+            console.log('intersezione e counter= '+ countIntersections );
+        })
+        }
+        
+        for(var i=0; i<2; i++){
+            path[i].addEventListener('raycaster-intersected-cleared', function(){
+            console.log('fine di una intersezione con il path');
+            countIntersections--;
+            console.log('fine intersezione e counter= '+ countIntersections );
+                if(countIntersections==0)
+                console.log('sei fuori dal percorso! e counter= '+ countIntersections);
+        })
+        }
+                            
+        /*
+        function waitingForEndIntersection(){
+            
+        }
         
         rc.addEventListener('raycaster-intersection', function(evt){
+            waitingForEndIntersection;
             console.log('lunghezza= ' + evt.detail.els.length);
             var len=evt.detail.els.length;
             for(var i=0 ; i< len ; i++){
-                intersected[i]=evt.detail.els[i];
+                intersected[i].emit('newIntersectionWithPath');
+                countIntersections++;
             }
             sky.setAttribute('color','black'); 
         });
         
         
-        rc.addEventListener('raycaster-intersection-cleared', function(evt){
-            console.log('lunghezza=' + intersected.length);
-            console.log('elemento a cui tolgo intersezione = ' + evt.detail.el);
-            var index;
-            for(var i=0 ; i<intersected.length; i++){
-                if (intersected[i].getAttribute('id')==e.detail.el.getAttribute('id'))
-                    index=i;
-            }
-            delete intersected[index];
-            if(intersected.length){
-                sky.setAttribute('color', 'white');
-            }
-            else return;
-        });
+        
+        });*/
            
        
         
