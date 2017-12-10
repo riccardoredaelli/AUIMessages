@@ -13,13 +13,16 @@
         <a-cursor></a-cursor>
          <a-entity id='rc' laser-controls raycaster="objects: .clickable ; showLine: true; interval:10" position='0 0 0'material='color: red'></a-entity>
     </a-camera>
+    
+      
     <a-sky id='sky' color='white'></a-sky>
     <a-entity id='path' class='clickable' >
-        <a-cylinder  id="cylinder" position="-2 0 -4" radius="0.8" height="5" rotation='0 0 90' color='green'></a-cylinder>
-        <a-cylinder id="cylinder1" position="2 0 -4" radius="0.8" height="5" rotation='0 0 90' color='yellow'></a-cylinder>   
+        <!--a-cylinder  id="cylinder" position="-2 0 -4" radius="0.8" height="5" rotation='0 0 90' color='green'></a-cylinder>
+        <a-cylinder id="cylinder1" position="2 0 -4" radius="0.8" height="5" rotation='0 0 90' color='yellow'></a-cylinder-->   
     </a-entity>
   </a-scene>
-    <script>
+    <script src="js/level1Costructor.js"></script>
+    <!--script>
         var scene=document.querySelector('#scene');
         var sky=document.querySelector('#sky');
         var rc=document.querySelector('#rc');
@@ -30,7 +33,6 @@
         var path= new Array();
         path[0]=c1;
         path[1]=c2;
-        
         
         for(var i=0; i<2; i++){
             path[i].addEventListener('raycaster-intersected', function(){
@@ -49,7 +51,7 @@
                 console.log('sei fuori dal percorso! e counter= '+ countIntersections);
         })
         }
-                            
+
         /*
         function waitingForEndIntersection(){
             
@@ -72,5 +74,5 @@
            
        
         
-    </script>
+    </script-->
 </body>
