@@ -51,3 +51,17 @@ c5.setAttribute('radiusTubolar', '0.2');
 c5.setAttribute('rotation', '90 0 -93');
 c5.setAttribute('arc', '96');
 scene.appendChild(c5);
+
+var house=document.createElement('a-entity');
+house.setAttribute('obj-model','obj: url(models/House/House.obj); mtl: url(models/House/House.mtl);');
+house.setAttribute('position','1.5 -1 8');
+house.setAttribute('scale','2 2 2');
+house.setAttribute('rotation','0 220 0');
+scene.appendChild(house);
+
+var gift=document.createElement('a-gltf-model');
+gift.setAttribute('src',"models/stack/scene.gltf");
+gift.setAttribute('position','-4.5 -0.5 -5.9');
+gift.setAttribute('scale','0.09 0.09 0.09');
+gift.setAttribute('rotation','0 40 0');
+scene.appendChild(gift);

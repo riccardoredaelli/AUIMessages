@@ -14,6 +14,17 @@
          <a-entity id='rc' laser-controls raycaster="objects: .clickable ; showLine: true; interval:10" position='0 0 0'material='color: red'></a-entity>
     </a-camera>
     
+    <!--a-assets>
+        <a-asset-item id="house-obj" src="models/House/House.obj"></a-asset-item>
+        <a-asset-item id="house-mtl" src="models/House/House.mtl"></a-asset-item>
+    </a-assets>
+    <a-entity id='casa' obj-model="obj: #house-obj; mtl: #house-mtl" position='0 2 -4' scale="1 1 1"></a-entity>
+    <a-entity obj-model="obj: url(models/House/House.obj); mtl: url(models/House/House.mtl);" position="1.5 -1 8" scale="2 2 2" rotation="0 220 0"></a-entity>   
+    
+    <a-assets>
+        <a-asset-item id="tree" src="models/stack/scene.gltf"></a-asset-item>
+      </a-assets>
+    <a-gltf-model src="#tree" animation-mixer position="-4.5 -0.5 -5.9" rotation="0 40 0" scale='0.09 0.09 0.09'></a-gltf-model-->
       
     <a-sky id='sky' color='white'></a-sky>
     <a-entity id='path' class='clickable' >
