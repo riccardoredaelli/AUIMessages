@@ -4,6 +4,7 @@ var scene=document.querySelector('#scene');
 
 var c1=document.createElement('a-torus');
 c1.setAttribute('id','c1');
+c1.setAttribute('opacity','0.2');
 c1.setAttribute('position', '0 0 0 ');
 c1.setAttribute('color', 'green');
 c1.setAttribute('radius', '8');
@@ -65,8 +66,8 @@ house.setAttribute('rotation','0 220 0');
 scene.appendChild(house);
 
 var gift=document.createElement('a-gltf-model');
-gift.setAttribute('src',"models/stack/scene.gltf");
+gift.setAttribute('obj-model','obj: url(models/singleGift/model.obj); mtl: url(models/singleGift/materials.mtl);');
 gift.setAttribute('position','-4.1  -0.5 -6.3');
-gift.setAttribute('scale','0.09 0.09 0.09');
+gift.setAttribute('scale','1 1 1');
 gift.setAttribute('rotation','0 40 0');
 scene.appendChild(gift);
