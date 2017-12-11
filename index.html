@@ -34,11 +34,13 @@
 <script>
 
 var g=document.createElement('a-entity');
-g.setAttribute('obj-model','obj: url(models/giftGroup/model.obj); mtl: url(models/giftGroup/materials.mtl);');
-g.setAttribute('position','0 0 -6.5');
-g.setAttribute('scale','1.5 1.5 1.5');
+g.setAttribute('obj-model','obj: url(models/singleGift/model.obj); mtl: url(models/singleGift/materials.mtl);');
+g.setAttribute('scale','0.3 0.3 0.3');
+g.setAttribute('rotation','0 0 0');
+g.setAttribute('position','0  0 -6.5');
 g.setAttribute('visible',false);
-g.setAttribute('rotation','45 0 0');
+    
+var finalGift=document.querySelector('#giftFinal');
 var info=document.querySelector('#info');
 var focused=false;
 var controller=document.querySelector("#controller");
@@ -46,6 +48,7 @@ var scene=document.querySelector("#scene");
 var pathController= false;
 var raycaster= document.querySelector('#rc');
 raycaster.appendChild(g);
+
 var rayPosition;
 var spPosition;
 var gifts= document.querySelector('#gift');
@@ -61,7 +64,6 @@ path[1]=c2;
 path[2]=c3;
 path[3]=c4;
 path[4]=c5;
-
 var lastIntersection=5;
     
 var arrival= document.createElement('a-sphere');
@@ -153,9 +155,10 @@ function winnerFunction(){
     scritta.setAttribute('position', '5 2.5 9');
     scritta.setAttribute('rotation','0 180 0');
     scritta.setAttribute('scale','3 3 3');
-    scritta.setAttribute('value', 'COMPLIMENTI! SEI RIUSCITO A FINIRE IL LIVELLO!!!!');
+    scritta.setAttribute('value', 'HAI VINTO!');
     scritta.setAttribute('visible',true);
     g.setAttribute('visible','false');
+    finalGift.setAttribute('visible',true);
     arrival.setAttribute('visible','false');
     spStop.setAttribute('visible','false');
     scene.appendChild(scritta);

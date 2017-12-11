@@ -77,3 +77,15 @@ gift.setAttribute('scale','0.7 0.7 0.7');
 gift.setAttribute('rotation','40 40 0');
 gift.setAttribute('id','gift');
 scene.appendChild(gift);
+
+
+
+
+var giftFinal=document.createElement('a-entity');
+giftFinal.setAttribute('obj-model','obj: url(models/singleGift/model.obj); mtl: url(models/singleGift/materials.mtl);');
+giftFinal.setAttribute('position','3.2 -1.6 8.15');
+giftFinal.setAttribute('scale','0.7 0.7 0.7');
+giftFinal.setAttribute('rotation','40 180 0');
+giftFinal.setAttribute('visible',false);
+giftFinal.setAttribute('id','giftFinal');
+scene.appendChild(giftFinal);

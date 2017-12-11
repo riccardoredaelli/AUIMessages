@@ -4,7 +4,6 @@ var scene=document.querySelector('#scene');
 
 var c1=document.createElement('a-torus');
 c1.setAttribute('id','c1');
-c1.setAttribute('opacity','0.2');
 c1.setAttribute('position', '0 0 0 ');
 c1.setAttribute('color', 'green');
 c1.setAttribute('radius', '8');
