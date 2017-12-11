@@ -66,7 +66,7 @@ scene.appendChild(house);
 
 var gift=document.createElement('a-gltf-model');
 gift.setAttribute('src',"models/stack/scene.gltf");
-gift.setAttribute('position','-4.5 -0.5 -5.9');
+gift.setAttribute('position','-4.1  -0.5 -6.3');
 gift.setAttribute('scale','0.09 0.09 0.09');
 gift.setAttribute('rotation','0 40 0');
 scene.appendChild(gift);

@@ -14,26 +14,14 @@
          <a-entity id='rc' laser-controls raycaster="objects: .clickable ; showLine: true; interval:10" position='0 0 0'material='color: red'></a-entity>
     </a-camera>
     
-    <!--a-assets>
-        <a-asset-item id="house-obj" src="models/House/House.obj"></a-asset-item>
-        <a-asset-item id="house-mtl" src="models/House/House.mtl"></a-asset-item>
-    </a-assets>
-    <a-entity id='casa' obj-model="obj: #house-obj; mtl: #house-mtl" position='0 2 -4' scale="1 1 1"></a-entity>
-    <a-entity obj-model="obj: url(models/House/House.obj); mtl: url(models/House/House.mtl);" position="1.5 -1 8" scale="2 2 2" rotation="0 220 0"></a-entity>   
-    
-    <a-assets>
-        <a-asset-item id="tree" src="models/stack/scene.gltf"></a-asset-item>
-      </a-assets>
-    <a-gltf-model src="#tree" animation-mixer position="-4.5 -0.5 -5.9" rotation="0 40 0" scale='0.09 0.09 0.09'></a-gltf-model-->
       
-    <a-sky id='sky' color='white'></a-sky>
+    <a-sky></a-sky>
     <a-entity id='path' class='clickable' >
-        <!--a-cylinder  id="cylinder" position="-2 0 -4" radius="0.8" height="5" rotation='0 0 90' color='green'></a-cylinder>
-        <a-cylinder id="cylinder1" position="2 0 -4" radius="0.8" height="5" rotation='0 0 90' color='yellow'></a-cylinder-->   
+        <a-cylinder  id="cylinder" position="-2 0 -4" radius="0.8" height="5" rotation='0 0 90' color='green'></a-cylinder>
+        <a-cylinder id="cylinder1" position="2 0 -4" radius="0.8" height="5" rotation='0 0 90' color='yellow'></a-cylinder>   
     </a-entity>
   </a-scene>
-    <script src="js/level1Costructor.js"></script>
-    <!--script>
+    <script>
         var scene=document.querySelector('#scene');
         var sky=document.querySelector('#sky');
         var rc=document.querySelector('#rc');
@@ -48,6 +36,7 @@
         for(var i=0; i<2; i++){
             path[i].addEventListener('raycaster-intersected', function(){
             console.log('intersezione con il path');
+            
             countIntersections++;
             console.log('intersezione e counter= '+ countIntersections );
         })
@@ -55,6 +44,8 @@
         
         for(var i=0; i<2; i++){
             path[i].addEventListener('raycaster-intersected-cleared', function(){
+                if(rc.components.raycaster.intersectedEls.length==0)
+                    console.log('sei fuori e funziona');
             console.log('fine di una intersezione con il path');
             countIntersections--;
             console.log('fine intersezione e counter= '+ countIntersections );
@@ -85,5 +76,5 @@
            
        
         
-    </script-->
+    </script>
 </body>
