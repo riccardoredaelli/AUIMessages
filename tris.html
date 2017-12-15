@@ -1,21 +1,59 @@
 <html>
   <head>
-    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script> 
   </head>
   <body>
-    <a-scene>
-     
-        <a-camera>
-            <a-cursor></a-cursor>
-        </a-camera>
+    <a-scene id='scene'>
+        <a-entity id="controller" daydream-controls rotationOffset='70'>
+            <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0'material='color: red'></a-entity>
+        </a-entity>
         
-        
-
-        <a-entity id="lForm" position="0 1 -4">
+        <a-entity id="form1" class="clickable" position="0 1 -4">
             <a-box color="green" position="0 0 0" depth="1" height="1" width="1"></a-box>
             <a-box color="red" position="1 0 0" depth="1" height="1" width="1"></a-box>         
         </a-entity>
-
+        
+        <a-box id='plane' class='clickable' position='5 1 0' rotation='0 -90 90' height='2' width='1' color='blue'></a-box>
     </a-scene>
+      
+    <script>
+        var obj1= document.querySelector('#form1');
+        var raycaster=document.querySelector('#rc');
+        var plane=document.querySelector('#plane');
+        var controller=document.querySelector('#controller');
+        var scene=document.querySelector('#scene');
+        controller.addEventListener('trackpaddown', function(e){
+            console.log('cliccato');
+            if(raycaster.components.raycaster.intersectedEls.length!=0){
+                console.log('nel if');
+                raycaster.appendChild(raycaster.components.raycaster.intersectedEls[0].parentNode);
+                var parent=raycaster.components.raycaster.intersectedEls[0].parentNode;
+                parent.setAttribute('position', '0 0 -4');
+                plane.addEventListener('raycaster-intersected',trackpadReleased)
+            }
+        else return;       
+        })
+        
+        function trackpadReleased(){
+            console.log('raggi intersecano il plane');
+            controller.addEventListener('trackpadup', function(){
+                console.log('trackpad released');
+                raycaster.removeChild(obj1);
+                if(raycaster.components.raycaster.intersectedEls.includes(plane)){
+                    console.log('ok, dovrei rilasciarlo qui!');
+                    plane.appendChild(obj1);
+                    console.log('rilasciato obj1 su plane');
+                    obj1.setAttribute('position','0 0 0.5');
+                    } 
+                else{
+                    scene.appendChild(obj1);
+                    obj1.setAttribute('position','0 1 -4');
+                }
+             });
+        }
+        
+        
+        
+    </script>
   </body>
 </html>

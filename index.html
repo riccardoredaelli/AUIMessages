@@ -47,7 +47,7 @@ var controller=document.querySelector("#controller");
 var scene=document.querySelector("#scene");
 var pathController= false;
 var raycaster= document.querySelector('#rc');
-raycaster.appendChild(g);
+
 
 var rayPosition;
 var spPosition;
@@ -173,7 +173,10 @@ function updateSpherePosition(){
         } 
     spStop.setAttribute('visible', true);
     spStop.setAttribute('color','#ffbf00');
-    spStop.setAttribute('opacity','1');
+    spStop.setAttribute('opacity','0.3');
+    raycaster.removeChild(g);
+    spStop.appendChild('g');
+    g.setAttribute('position','0 0 0');
     spStop.setAttribute('radius','0.4');
     spStop.setAttribute('position', spPosition);    
     controller.removeChild(r1);
@@ -208,6 +211,7 @@ controller.addEventListener('trackpaddown', function() {
         gift.setAttribute('visible', false);
         g.setAttribute('visible', true);
         info.setAttribute('visible',false);
+        raycaster.appendChild(g);
         for(var i=0; i<5; i++){
             path[i].setAttribute('color', '#ff0000');
         }
