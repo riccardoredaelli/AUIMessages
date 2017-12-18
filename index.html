@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
 <title>Wivr</title>
-<script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script> 
+<script src="js/master-min.js"></script> 
 <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script> 
 <script src="js/collidable.js"></script>
 <script src="js/three.js"></script>
@@ -175,7 +175,7 @@ function updateSpherePosition(){
     spStop.setAttribute('color','#ffbf00');
     spStop.setAttribute('opacity','0.3');
     raycaster.removeChild(g);
-    spStop.appendChild('g');
+    spStop.appendChild(g);
     g.setAttribute('position','0 0 0');
     spStop.setAttribute('radius','0.4');
     spStop.setAttribute('position', spPosition);    
