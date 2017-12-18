@@ -83,6 +83,7 @@ spStop.setAttribute('color', 'red');
 spStop.setAttribute('position', '-3.4 -0.1 -6');
 spStop.setAttribute('opacity','0.3');
 spStop.setAttribute('class', 'clickable');
+spStop.setAttribute('id', 'spStop');
 
 scene.appendChild(spStop);
 scene.appendChild(arrival);
@@ -96,7 +97,6 @@ r1.setAttribute('visible',false);
 for(var i=0; i<5; i++){
     path[i].addEventListener('raycaster-intersected', function(e){
         scene.emit('first-intersection');
-        console.log('intersezione con un altro pezzo del path');
     })
 }
         
@@ -104,7 +104,6 @@ for(var i=0; i<5; i++){
     path[i].addEventListener('raycaster-intersected-cleared', function(){
         console.log('una intersezione cleared');
            if(raycaster.components.raycaster.intersectedEls.length==0){
-            console.log('sei fuori dal percorso!');
             scene.emit('intersection-cleared');
             } 
     })
@@ -179,7 +178,7 @@ function updateSpherePosition(){
     spStop.setAttribute('color','#ffbf00');
     spStop.setAttribute('opacity','0.3');
     g.setAttribute('visible',false);
-    spStop.setAttribute('radius','0.4');
+    spStop.setAttribute('radius','0.7');
     spStop.setAttribute('position', spPosition);  
     gift.setAttribute('position', spPosition);
     gift.setAttribute('visible', true);
@@ -192,7 +191,6 @@ function lookForPosition(){
     r1.addEventListener('raycaster-intersection',function(e){
         rayPosition=e.detail.intersections[0].point;
         scene.emit('rayPositionUpdated');
-        console.log('posizione raycaster presa');
     })
 }
     
@@ -205,12 +203,10 @@ function doTrackpadUp(){
             scene.removeEventListener('rayPositionUpdated', updateSpherePosition);
     });
     scene.emit('finished');
-    console.log('funzione trackpad up finita!');
 }
     
 controller.addEventListener('trackpaddown', function() {
     if(focused){
-        console.log('cliccato sulla pallina iniziale');
         spStop.setAttribute("visible", false);
         gift.setAttribute('visible', false);
         g.setAttribute('visible', true);
@@ -231,7 +227,6 @@ controller.addEventListener('trackpaddown', function() {
             scene.removeEventListener('winner', winnerFunction);
             controller.removeEventListener('trackpadup', doTrackpadUp);
             scene.removeEventListener('intersection-cleared', changePathControllerToFalse);
-            console.log('evento emesso e rimossi i listener');
         });
         
         
