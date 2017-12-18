@@ -27,8 +27,10 @@
         <a-entity id="controller" daydream-controls="hand: right">
             <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0'material='color: red'></a-entity>
         </a-entity>
-        <a-text id='info' value='trascina i regali 
-                                 lungo il percorso' color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text>
+        <!--a-text id='info' value='Trascina i regali 
+                                 lungo il percorso' color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text-->
+        <a-entity id="info" text="value:Trascina i regali 
+                                 lungo il percorso; color:yellow; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/crimsontext/CrimsonText-Regular.json;" position='-2 2 -8'  rotation='0 30 0' scale='7 7 7'></a-entity>
     </a-scene>
     <script src='js/level2Costructor.js'></script>
 <script>
@@ -157,6 +159,7 @@ function winnerFunction(){
     scritta.setAttribute('scale','3 3 3');
     scritta.setAttribute('value', 'HAI VINTO!');
     scritta.setAttribute('visible',true);
+    scritta.setAttribute("text", "font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/crimsontext/CrimsonText-Regular.json;");
     g.setAttribute('visible','false');
     finalGift.setAttribute('visible',true);
     arrival.setAttribute('visible','false');

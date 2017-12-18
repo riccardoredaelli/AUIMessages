@@ -1,21 +1,45 @@
 <html>
-  <head>
-    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
-  </head>
-  <body>
-    <a-scene>
-     
-        <a-camera>
-            <a-cursor></a-cursor>
-        </a-camera>
-        
-        
+    <head>
+        <title>Tris</title>
+        <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    </head>
+    <body>
+        <a-scene>
+            <a-camera user-height='0'></a-camera>
+            <a-entity id="controller" daydream-controls="hand: right">
+                <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0' material='color: red'></a-entity>
+            </a-entity>
 
-        <a-entity id="lForm" position="0 1 -4">
-            <a-box color="green" position="0 0 0" depth="1" height="1" width="1"></a-box>
-            <a-box color="red" position="1 0 0" depth="1" height="1" width="1"></a-box>         
-        </a-entity>
+            <a-entity id="table" position="0 0 -5" >
+                <a-box color="green" height="2" width="1" rotation="0 0 0" depth="0.1" position="1.5 1.5 0"></a-box>
+                <a-box color="pink" height="2" width="2" rotation="0 0 0" depth="0.1" position="1  -0.5 0"></a-box>
+                <a-box color="red" height="1" width="3" rotation="0 0 0" depth="0.1" position="-0.5 2 0"></a-box>
+                <a-entity>
+                    <a-box color="blue" height="1" width="3" rotation="0 0 0" depth="0.1" position="-0.5 1 0"></a-box>
+                    <a-box color="blue" height="1" width="1" rotation="0 0 0" depth="0.1" position="-0.5 0 0"></a-box>
+                </a-entity>
+                <a-entity>
+                    <a-box color="yellow" height="1" width="1" rotation="0 0 0" depth="0.1" position="-0.5 -1 0"></a-box>
+                    <a-box color="yellow" height="2" width="1" rotation="0 0 0" depth="0.1" position="-1.5 -0.5 0"></a-box>
+                </a-entity>
+            </a-entity>
 
-    </a-scene>
-  </body>
+            <!--pezzi sparsi-->               
+            <a-box color="green" height="2" width="1" depth="0.3" rotation="0 0 0" position="3 3 -5"></a-box>
+            <a-box color="pink" height="2" width="2" depth="0.3" rotation="0 0 0" position="-2 -5 -5"></a-box>
+            <a-box color="red" height="1" width="3" depth="0.3" rotation="0 0 0" position="1 4 -5"></a-box>
+            <a-entity position="3 -5 -5">
+                <a-box color="blue" height="1" width="3" depth="0.3" rotation="0 0 0" position="-0.5 1 0"></a-box>
+                <a-box color="blue" height="1" width="1" depth="0.3" rotation="0 0 0" position="-0.5 0 0"></a-box>
+            </a-entity>
+            <a-entity position="-3 4 -5">
+                <a-box color="yellow" height="1" width="1" depth="0.3" rotation="0 0 0" position="-0.5 -1 0"></a-box>
+                <a-box color="yellow" height="2" width="1" depth="0.3" rotation="0 0 0" position="-1.5 -0.5 0"></a-box>
+            </a-entity>
+            
+        </a-scene>
+        <script>
+            
+        </script>
+    </body>
 </html>
