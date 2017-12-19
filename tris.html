@@ -41,20 +41,20 @@
                 raycaster.removeChild(obj1);
                 if(raycaster.components.raycaster.intersectedEls.includes(plane)){
                     console.log('z del controller è:' + controller.object3D.rotation._z);
-                    if( -0.75 <= controller.object3D.rotation._z <= 0.75)
+                    if(controller.object3D.rotation._z <= 0.75 && controller.object3D.rotation._z >= -0.75)
                         {    
-                        scene.removeChild(obj1);
                         plane.appendChild(obj1);
                         obj1.setAttribute('position','0 0 0.5');
-                        console.log('bravo, lo hai mantenuto dritto come a inizio');
+                        console.log('dentro if, bravo, lo hai mantenuto dritto come a inizio');
                         obj1.setAttribute('rotation', '0, -90 90');
                         } 
                     else{
                         scene.appendChild(obj1);
+                        console.log('dentro else');
                         obj1.setAttribute('position','0 1 -4');
                     }   
                 }
-            }):
+            });
         }
         
         
