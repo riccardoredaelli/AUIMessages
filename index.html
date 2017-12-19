@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <head>
 <title>Wivr</title>
-<script src="https://rawgit.com/aframevr/aframe/master/dist/aframe-master.min.js"></script> 
+<script src="js/master-min.js"></script> 
 <script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script> 
 <script src="js/collidable.js"></script>
 <script src="js/three.js"></script>
 </head>
  
 <body>
-    <a-scene id="scene">        
+    <a-scene id="scene">
         <a-assets>
         <img id="skymap" src="sky.jpg" crossorigin="anonymous">
         <img id="floor" src="floor.jpg" crossorigin="anonymous">
@@ -27,12 +27,10 @@
         <a-entity id="controller" daydream-controls="hand: right">
             <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0'material='color: red'></a-entity>
         </a-entity>
-        <!--a-text id='info' value='Trascina i regali 
-                                 lungo il percorso' color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text-->
-        <a-entity id="info" text="value:Trascina i regali 
-                                 lungo il percorso; color:yellow; shader: msdf; font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/crimsontext/CrimsonText-Regular.json;" position='-2 2 -8'  rotation='0 30 0' scale='7 7 7'></a-entity>        
+        <a-text id='info' value='trascina i regali 
+                                 lungo il percorso' color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text>
     </a-scene>
-    <script src='js/level1Costructor.js'></script>
+    <script src='js/level2Costructor.js'></script>
 <script>
 
     //creato qui perchè da IN JS NON FUNZIONA
@@ -42,7 +40,7 @@
     g.setAttribute('rotation','0 0 0');
     g.setAttribute('position','0  0 -6.5');
     g.setAttribute('visible',false);
-    
+
     var endingPoint=document.querySelector("endingPoint");
     var startingPoint=document.querySelector("startingPoint");
     var finalGift=document.querySelector('#giftFinal');
@@ -52,11 +50,10 @@
     var scene=document.querySelector("#scene");
     var pathController= false;
     var raycaster= document.querySelector('#rc');
-    raycaster.appendChild(g);
     var rayPosition;
     var spPosition;
-    var gifts= document.querySelector('#gift');
-    var c1= document.querySelector('#c1');
+    var gift= document.querySelector('#gift');
+    var c1=document.querySelector('#c1');
     var c2= document.querySelector('#c2');
     var c3= document.querySelector('#c3');
     var c4= document.querySelector('#c4');
@@ -70,29 +67,28 @@
     path[4]=c5;
     var lastIntersection=5;
     var finalText=document.querySelector("finalText");
- 
+
     //creazione sfere arrivo e partenza IN JS NON FUNZIONANO
     var arrival= document.createElement('a-sphere');
-    arrival.setAttribute("id", "arrivalSp");
     arrival.setAttribute('radius', '1.5');
     arrival.setAttribute('visible', true);
     arrival.setAttribute('opacity','0.2');
     arrival.setAttribute('color', 'yellow');    
     arrival.setAttribute('class', 'clickable');
     arrival.setAttribute('position','1.2 0 8.1');
-    scene.appendChild(arrival);
 
     var spStop= document.createElement('a-sphere');
-    spStop.setAttribute("id", "spStop");
     spStop.setAttribute('radius', '1');
     spStop.setAttribute('visible', true);
     spStop.setAttribute('color', 'red');
     spStop.setAttribute('position', '-3.4 -0.1 -6');
     spStop.setAttribute('opacity','0.3');
     spStop.setAttribute('class', 'clickable');
+    spStop.setAttribute('id', 'spStop');
+
     scene.appendChild(spStop);
-
-
+    scene.appendChild(arrival);
+    raycaster.appendChild(g);
 
     var r1= document.createElement('a-entity');
     r1.setAttribute('raycaster','objects: .clickable');
@@ -102,7 +98,6 @@
     for(var i=0; i<5; i++){
         path[i].addEventListener('raycaster-intersected', function(e){
             scene.emit('first-intersection');
-            console.log('intersezione con un altro pezzo del path');
         })
     }
 
@@ -110,7 +105,6 @@
         path[i].addEventListener('raycaster-intersected-cleared', function(){
             console.log('una intersezione cleared');
                if(raycaster.components.raycaster.intersectedEls.length==0){
-                console.log('sei fuori dal percorso!');
                 scene.emit('intersection-cleared');
                 } 
         })
@@ -150,6 +144,7 @@
         spStop.setAttribute('opacity','0.3');
         spStop.setAttribute('visible',true);
         gift.setAttribute('visible',true);
+        gift.setAttribute('position','-3  0. -5.3');
         for(var i=0; i<5; i++){
                 path[i].setAttribute('color', '#7a0000');
             }  
@@ -158,12 +153,19 @@
     }
 
     function winnerFunction(){
-        console.log('intersecato sfera finale!');
-        finalText.setAttribute("visibile", true);
+        console.log('intersecato sfera finale!!');
+        var scritta=document.createElement('a-text');
+        scritta.setAttribute('color', 'red');
+        scritta.setAttribute('position', '5 2.5 9');
+        scritta.setAttribute('rotation','0 180 0');
+        scritta.setAttribute('scale','3 3 3');
+        scritta.setAttribute('value', 'HAI VINTO!');
+        scritta.setAttribute('visible',true);
         g.setAttribute('visible','false');
         finalGift.setAttribute('visible',true);
         arrival.setAttribute('visible','false');
         spStop.setAttribute('visible','false');
+        scene.appendChild(scritta);
         scene.emit('finished');
     }
 
@@ -175,9 +177,12 @@
             } 
         spStop.setAttribute('visible', true);
         spStop.setAttribute('color','#ffbf00');
-        spStop.setAttribute('opacity','1');
-        spStop.setAttribute('radius','0.4');
-        spStop.setAttribute('position', spPosition);    
+        spStop.setAttribute('opacity','0.3');
+        g.setAttribute('visible',false);
+        spStop.setAttribute('radius','0.7');
+        spStop.setAttribute('position', spPosition);  
+        gift.setAttribute('position', spPosition);
+        gift.setAttribute('visible', true);
         controller.removeChild(r1);
         scene.emit('updateFinished');
     }
@@ -187,7 +192,6 @@
         r1.addEventListener('raycaster-intersection',function(e){
             rayPosition=e.detail.intersections[0].point;
             scene.emit('rayPositionUpdated');
-            console.log('posizione raycaster presa');
         })
     }
 
@@ -200,16 +204,15 @@
                 scene.removeEventListener('rayPositionUpdated', updateSpherePosition);
         });
         scene.emit('finished');
-        console.log('funzione trackpad up finita!');
     }
 
     controller.addEventListener('trackpaddown', function() {
         if(focused){
-            console.log('cliccato sulla pallina iniziale');
             spStop.setAttribute("visible", false);
             gift.setAttribute('visible', false);
             g.setAttribute('visible', true);
             info.setAttribute('visible',false);
+
             for(var i=0; i<5; i++){
                 path[i].setAttribute('color', '#ff0000');
             }
@@ -225,13 +228,11 @@
                 scene.removeEventListener('winner', winnerFunction);
                 controller.removeEventListener('trackpadup', doTrackpadUp);
                 scene.removeEventListener('intersection-cleared', changePathControllerToFalse);
-                console.log('evento emesso e rimossi i listener');
             });
 
 
         }
         else return;
     });
-    
 </script>
 </body>
