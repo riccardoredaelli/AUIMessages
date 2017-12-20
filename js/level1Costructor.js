@@ -1,5 +1,18 @@
 var scene=document.querySelector('#scene');
 
+//posizioni iniziali e finale del percorso
+var endingPoint=document.createElement("a-text");
+endingPoint.setAttribute("value", '1.15 0 8');
+endingPoint.setAttribute("id","endingPoint");
+endingPoint.setAttribute("visible", false);
+scene.appendChild(endingPoint);
+
+var startingPoint=document.createElement("a-text");
+startingPoint.setAttribute("value", '-3  0 -5.3');
+startingPoint.setAttribute("id","startingPoint");
+startingPoint.setAttribute("visible", false);
+scene.appendChild(startingPoint);
+
 var c1=document.createElement('a-torus');
 c1.setAttribute('id','c1');
 c1.setAttribute('position', '0 0 0 ');
@@ -61,15 +74,6 @@ c5.setAttribute('class', 'clickable');
 c5.setAttribute('shader','flat');
 scene.appendChild(c5);
 
-//posizioni iniziali e finale del percorso
-var endingPoint=document.createElement("a-text");
-endingPoint.setAttribute("value", '1.15 0 8');
-endingPoint.setAttribute("id","endingPoint");
-
-var startingPoint=document.createElement("a-text");
-startingPoint.setAttribute("value", '-3  0 -5.3');
-startingPoint.setAttribute("id","startingPoint");
-
 //posiziono oggetti partenza e arrivo
 var endingObj=document.createElement('a-entity');
 endingObj.setAttribute('obj-model','obj: url(models/albero/model.obj); mtl: url(models/albero/materials.mtl);');
@@ -104,4 +108,19 @@ finalText.setAttribute('scale','3 3 3');
 finalText.setAttribute('value', 'HAI VINTO!');
 finalText.setAttribute('visible',false);
 finalText.setAttribute("text", "font:https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/crimsontext/CrimsonText-Regular.json;");
-scene.appendChild(scritta);
+scene.appendChild(finalText);
+
+//sfere inizio e fine
+var spStop= document.createElement('a-sphere');
+spStop.setAttribute("id", "spStop");
+spStop.setAttribute('radius', '1');
+spStop.setAttribute('visible', true);
+spStop.setAttribute('color', 'red');
+spStop.setAttribute('opacity','0.3');
+spStop.setAttribute('class', 'clickable');
+spStop.setAttribute('id', 'spStop');
+scene.appendChild(spStop);
+
+//pacco che sposto sul raycaster
+var g= document.querySelector('g');
+g.setAttribute('position','0  0 -6.5');
