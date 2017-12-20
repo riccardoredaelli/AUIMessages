@@ -4,25 +4,240 @@
   </head>
   <body>
     <a-scene id='scene'>
-        <a-entity id="controller" daydream-controls rotationOffset='70'>
-            <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0'material='color: red'></a-entity>
-        </a-entity>
+            <a-camera user-height='0'></a-camera>
+            <a-entity id="controller" daydream-controls="hand: right">
+                <a-entity id='rc' raycaster="objects: .clickable; showLine: true; interval:10; far:30" position='0 0 0' material='color: red'></a-entity>
+            </a-entity>
+
+            <a-entity id="table" class='clickable'  position="0 0 -5" >
+                <a-box id='green' class='table' color="green" opacity='0.5' height="2" width="1" rotation="0 0 0" depth="0.1" position="1.5 1.5 0" value="ciao"></a-box>
+                <a-box id='pink'class='table' color="pink" opacity='0.5' height="2" width="2" rotation="0 0 0" depth="0.1" position="1  -0.5 0"></a-box>
+                <a-box id='red' class='table' color="red" opacity='0.5' height="1" width="3" rotation="0 0 0" depth="0.1" position="-0.5 2 0"></a-box>
+                <a-entity id='blue' color="blue"  class='table'>
+                    <a-box color="blue" class='table' opacity='0.5' height="1" width="3" rotation="0 0 0" depth="0.1" position="-0.5 1 0"></a-box>
+                    <a-box color="blue" class='table' opacity='0.5' height="1" width="1" rotation="0 0 0" depth="0.1" position="-0.5 0 0"></a-box>
+                </a-entity>
+                <a-entity id='yellow' color="yellow" class='table' >
+                    <a-box color="yellow" class='table' opacity='0.5' height="1" width="1" rotation="0 0 0" depth="0.1" position="-0.5 -1 0"></a-box>
+                    <a-box color="yellow"  class='table' opacity='0.5' height="2" width="1" rotation="0 0 0" depth="0.1" position="-1.5 -0.5 0"></a-box>
+                </a-entity>
+            </a-entity>
         
-        <a-entity id="form1" class="clickable" position="0 1 -4">
-            <a-box color="green" position="0 0 0" depth="1" height="1" width="1"></a-box>
-            <a-box color="red" position="1 0 0" depth="1" height="1" width="1"></a-box>         
-        </a-entity>
-        
-        <a-box id='plane' class='clickable' position='5 1 0' rotation='0 -90 90' height='2' width='1' color='blue'></a-box>
-    </a-scene>
+            <!--pezzi sparsi-->     
+            <a-entity id='objects' class='clickable'>
+                <a-box id='greenTwo' class='piece'  color="green" height="2" width="1" depth="0.3" rotation="0 0 90" position="3.8 0.8 -5" value='90' ></a-box>
+                <a-box id='pinkSquare' class='piece' color="pink" height="2" width="2" depth="0.3" rotation="0 0 0" position="-2 -5 -5" value='0' ></a-box>
+                <a-box  id='redThree' class='piece' color="red" height="1" width="3" depth="0.3" rotation="0 0 0" position="1 4 -5" value='0'></a-box> 
+                <a-entity id='blueFigure' color='blue' class='piece' position="3 -5 -5" rotation='0 0 90' value='90'>
+                    <a-box color="blue" class='piece'  height="1" width="3" depth="0.3" rotation="0 0 0" position="-0.5 1 0"></a-box>
+                    <a-box color="blue" class='piece' height="1" width="1" depth="0.3" rotation="0 0 0" position="-0.5 0 0"></a-box>
+                </a-entity>
+                <a-entity id='yellowL' color='yellow' class='piece' position="-3 4 -5" rotation='0 0 -90' value='270'>
+                    <a-box color="yellow" class='piece'  height="1" width="1" depth="0.3" rotation="0 0 0" position="-0.5 -1 0"></a-box>
+                    <a-box color="yellow" class='piece'  height="2" width="1" depth="0.3" rotation="0 0 0" position="-1.5 -0.5 0"></a-box>
+                </a-entity>
+            </a-entity>
+            
+        </a-scene>
       
     <script>
-        var obj1= document.querySelector('#form1');
+        var objects=document.querySelector('#objects');
         var raycaster=document.querySelector('#rc');
-        var plane=document.querySelector('#plane');
         var controller=document.querySelector('#controller');
         var scene=document.querySelector('#scene');
-        controller.addEventListener('trackpaddown', function(e){
+        var numOfPieces= 5;
+        var numOfTable= 5;
+        var piecesFocused=new Array(numOfPieces);
+        for(var i=0; i<numOfPieces; i++){
+            piecesFocused[i]=false;
+        }
+        
+        var tableFocused= new Array(numOfTable);
+        for(var i=0; i<numOfTable; i++){
+            tableFocused[i]=false;
+        }
+        
+        var greenPiece=document.querySelector('#greenTwo');
+        var pinkPiece=document.querySelector('#pinkSquare');
+        var redPiece=document.querySelector('#redThree');
+        var bluePiece=document.querySelector('#blueFigure');
+        var yellowPiece=document.querySelector('#yellowL');
+        
+        var pieces= new Array(numOfPieces);
+        pieces[0]=greenPiece;
+        pieces[1]=pinkPiece;
+        pieces[2]=redPiece;
+        pieces[3]=bluePiece;
+        pieces[4]=yellowPiece;
+        
+        var greeen=document.querySelector('#green');
+        var pink=document.querySelector('#pink');
+        var red=document.querySelector('#red');
+        var blue=document.querySelector('#blue');
+        var yellow=document.querySelector('#yellow');
+        var table= new Array(numOfTable);
+        table[0]=greeen;
+        table[1]=pink;
+        table[2]=red;
+        table[3]=blue;
+        table[4]=yellow;
+        
+        console.log('value è= '+ table[0].getAttribute('value'));
+        var focused= -1; //ricordarsi di reimpostarla a null dopo la funzione!!!
+        var textPosition= document.createElement('a-text');
+        textPosition.setAttribute('visible', 'false');
+        scene.appendChild(textPosition);
+        
+        
+        // cambia pathfocused e tablefocused in true (per table fa un bel giro e mette anche su false)
+        raycaster.addEventListener('raycaster-intersection', function(e){
+            for (var i=0; i<numOfPieces; i ++){
+                if (checkIfContainedInPath(e, i)){
+                    piecesFocused[i]=true;
+                }
+            }
+            var isContained=false;
+            for (var i=0; i<numOfTable; i ++){
+                if(checkIfContainedInTable(e, i)) 
+                    isContained=true;
+            }
+            if(!isContained)
+                for(var i=0; i<numOfTable; i++){
+                    tableFocused[i]=false;
+                }
+        })
+        
+        //funzione che controlla che elemento i-esimo di path sia contenuto tra gli elementi dell'evento e
+        function checkIfContainedInPath(e , i){
+            for(var j=0; j<e.detail.els.length; j++){
+                if (e.detail.els[j].getAttribute('color')==pieces[i].getAttribute('color') && e.detail.els[j].getAttribute('class')=='piece') { 
+                    //console.log('hai intersecato l oggetto: ' + pieces[i].getAttribute('id'));
+                    return true;
+                }
+            }
+        }
+        
+        //funzione che controlla che elemento i-esimo di table sia contenuto tra gli elementi dell'evento e ritorna true se un pezzo del table è focused, false altrimenti.
+        function checkIfContainedInTable(e, i){
+            for(var j=0; j<e.detail.els.length; j++){
+                if (e.detail.els[j].getAttribute('color')==table[i].getAttribute('color') && e.detail.els[j].getAttribute('class')=='table'){
+                    tableFocused[i]=true;
+                    //console.log('un pezzo del table è focused: ' +table[i].getAttribute('id'));
+                    for(var z=0; z<numOfTable; z++){
+                        if(z!=i)
+                        tableFocused[z]=false;
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        //cambia piece focused in false quando i raycaster concludono l'intersezione
+        for (var i=0; i<numOfPieces; i++){
+            pieces[i].addEventListener('raycaster-intersected-cleared', function(){
+                for(var j=0; j<numOfPieces; j++){
+                    piecesFocused[j]=false;
+                }
+            })
+        }
+        
+        
+        //attende che clicchi il trackpad su una figura!
+        controller.addEventListener('trackpaddown', function(){
+            for (var i=0; i<numOfPieces; i++){
+                if (piecesFocused[i]==true){
+                    focused=i;
+                    textPosition.setAttribute('value', pieces[focused].getAttribute('position').x +' '+pieces[focused].getAttribute('position').y +' '+pieces[focused].getAttribute('position').z);
+                    //console.log('il pezzo da attaccare focused è:' + focused + 'posizione inniziale= ' + pieces[focused].getAttribute('position').x +' '+pieces[focused].getAttribute('position').y +' '+pieces[focused].getAttribute('position').z);
+                }
+            }
+            if (focused==-1) {
+                console.log('non puntavi su nessun pezzo quando hai cliccato');
+                return; //return se nessun pezzo è focalizzato!
+                }   
+            objects.removeChild(pieces[focused]);
+            raycaster.appendChild(pieces[focused]);
+            pieces[focused].setAttribute('scale', '0.6 0.6 0.6');
+            pieces[focused].setAttribute('position', '0 0 -4.2');
+            controller.addEventListener('trackpadup', doTrackpadUp);
+            scene.addEventListener('trackpadUpFinished', removeListeners);
+        })
+        
+        function removeListeners(){
+            focused=-1;
+            controller.removeEventListener('trackpadup', doTrackpadUp);
+            scene.removeEventListener('trackpadUpFinished',removeListeners);
+        }
+        
+        //funzione per quando rilascio il trackpad, deve controllare se sono o no sull'oggetto desideraro. nel caso lascio giù l'oggetto, altrimenti lo faccio tornare alla posizione iniziale. alla fine emette un trackpadUpFinisced sulla scena.
+        function doTrackpadUp(){
+            console.log('hai rilasciato il trackpad e sei nella funzione dotrackpadup');
+            raycaster.removeChild(pieces[focused]);
+            pieces[focused].setAttribute('scale','1 1 1');
+            if(tableFocused[focused]==true && checkRotation()){//se posto ok + aggioungere funzione checkrotation
+                console.log('bravo, hai rilasciato nel posto giusto');
+                table[focused].appendChild(pieces[focused]);
+                pieces[focused].setAttribute('position', '0 0 0');
+                pieces[focused].setAttribute('rotation', '0 0 0');
+                pieces[focused].setAttribute('opacity', '1');
+            }
+            else{
+                console.log('hai rilasciato nel posto sbagliato');
+                objects.appendChild(pieces[focused]);
+                console.log('posizione dove dovrebbe essere rilasciato l oggetto: ' + textPosition.getAttribute('value') );
+                pieces[focused].setAttribute('position', textPosition.getAttribute('value'));
+            }
+            scene.emit('trackpadUpFinished');
+        }
+        
+        //ritorna true se giusto; false altrimenti
+        function checkRotation(){
+            if(pieces[focused].childElementCount==0){
+                console.log('il pezzo è formato da un solo elemento');
+                if(focused==1){ //ritorna true se l'oggetto è il numero 1, in questo caso unn quadrato!
+                    return true;
+                }
+                if(pieces[focused].getAttribute('value')=='0' || pieces[focused].getAttribute('value')=='180'){
+                    if((controller.object3D.rotation._z<0.3 && controller.object3D.rotation._z>-0.3) || (controller.object3D.rotation._z>2.7 && controller.object3D.rotation._z< -2.7))
+                        return true;
+                    else return false;
+                }  
+                if(pieces[focused].getAttribute('value')=='90'|| pieces[focused].getAttribute('value')=='270'){
+                    if((controller.object3D.rotation._z>1.2 && controller.object3D.rotation._z <1.8 )|| (controller.object3D.rotation._z>-1.8 && controller.object3D.rotation._z<-1.2))
+                        return true;
+                    else return false;
+                }
+            }
+            else{
+                console.log('il pezzo è formato da più elementi');
+                if(pieces[focused].getAttribute('value')=='0'){
+                    if(controller.object3D.rotation._z<0.35 && controller.object3D.rotation._z>-0.35)
+                        return true;
+                    else return false;
+                }
+                    
+                if(pieces[focused].getAttribute('value')=='90'){
+                    if(controller.object3D.rotation._z>-1.9 && controller.object3D.rotation._z<-1.25)
+                        return true;
+                    else return false;
+                }
+                
+                if(pieces[focused].getAttribute('value')=='180'){
+                    if(controller.object3D.rotation._z>2.7 && controller.object3D.rotation._z< -2.7)
+                        return true;
+                    else return false;
+                }
+                    
+                if(pieces[focused].getAttribute('value')=='270'){
+                    if(controller.object3D.rotation._z>1.2 && controller.object3D.rotation._z <1.8)
+                        return true;
+                    else return false;
+                }
+            }
+        }
+        
+        /*controller.addEventListener('trackpaddown', function(e){
             console.log('cliccato');
             if(raycaster.components.raycaster.intersectedEls.length!=0){
                 console.log('nel if');
@@ -55,7 +270,7 @@
                     }   
                 }
             });
-        }
+        }*/
         
         
         
