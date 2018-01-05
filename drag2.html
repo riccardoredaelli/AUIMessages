@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<head>
+<title>Wivr</title>
+<script src="js/master-min.js"></script> 
+<script src="https://unpkg.com/aframe-curve-component/dist/aframe-curve-component.min.js"></script> 
+<script src="js/collidable.js"></script>
+<script src="js/three.js"></script>
+</head>
+ 
+<body>
+    <a-scene id="scene">
+        <a-assets>
+        <img id="skymap" src="models/sky.jpg" crossorigin="anonymous">
+        <img id="floor" src="models/floor.jpg" crossorigin="anonymous">
+        </a-assets>
+        <a-entity id="ground"
+                geometry="primitive: box; width:40; height: 0.01; depth: 40"
+                material="shader: flat; src: #floor"
+                position="0 -3 0">
+              </a-entity>
+        <a-entity id="sky" geometry="primitive:sphere; radius:10; phiLength:360; phiStart:0; thetaLength:100" material="shader:flat; side:back; height:2048; src:#skymap; width:2048"></a-entity>
+        <a-plane color='black' height='50' width='50' position='0 -5 0' rotation='90 0 0 '></a-plane>
+        <a-light type="point" light="color: #fff; intensity:0.6" position="3 10 1"></a-light>
+        <a-light type="point" light="color: #fff; intensity:0.2" position="-3 -10 0"></a-light>
+        <a-light type="hemisphere" groundColor="#888" intensity="0.8"></a-light>
+        <a-camera user-height='0'></a-camera>
+        <a-entity id="controller" daydream-controls="hand: right">
+            <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0'material='color: red'></a-entity>
+        </a-entity>
+        <a-text id='info' value='trascina i regali 
+                                 lungo il percorso' color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text>
+    </a-scene>
+    <script src='js/level2Costructor.js'></script>
+<script>
+
+    //creato qui perchè da IN JS NON FUNZIONA
+    var g=document.createElement('a-entity');
+    g.setAttribute('obj-model','obj: url(models/singleGift/model.obj); mtl: url(models/singleGift/materials.mtl);');
+    g.setAttribute('scale','0.3 0.3 0.3');
+    g.setAttribute('rotation','0 0 0');
+    g.setAttribute('visible',false);
+    g.setAttribute("id", "g");
+
+    var finalGift=document.querySelector('#giftFinal');
+    var info=document.querySelector('#info');
+    var focused=false;
+    var controller=document.querySelector("#controller");
+    var scene=document.querySelector("#scene");
+    var pathController= false;
+    var raycaster= document.querySelector('#rc');
+    var rayPosition;
+    var spPosition;
+    var gift= document.querySelector('#gift');
+    var c1=document.querySelector('#c1');
+    var c2= document.querySelector('#c2');
+    var c3= document.querySelector('#c3');
+    var c4= document.querySelector('#c4');
+    var c5= document.querySelector('#c5');
+    var countIntersections=0;
+    var path= new Array();
+    path[0]=c1;
+    path[1]=c2; 
+    path[2]=c3;
+    path[3]=c4;
+    path[4]=c5;
+    var lastIntersection=5;
+    var finalText=document.querySelector("#finalText");
+    var endingPoint=document.querySelector("#endingPoint");
+    var startingPoint = document.querySelector("#startingPoint").getAttribute("value");
+  
+    console.log("HTML: "+startingPoint);
+    //creazione sfere arrivo e partenza IN JS NON FUNZIONANO
+    var arrival= document.createElement('a-sphere');
+    arrival.setAttribute('radius', '1.5');
+    arrival.setAttribute('visible', true);
+    arrival.setAttribute('opacity','0.2');
+    arrival.setAttribute('color', 'yellow');    
+    arrival.setAttribute('class', 'clickable');
+    arrival.setAttribute('position','1.2 0 8.1');
+    
+    var spStop=document.querySelector("#spStop");
+    spStop.setAttribute('position', startingPoint);
+/*
+    var spStop= document.createElement('a-sphere');
+    spStop.setAttribute('position', "0 0 0");
+    spStop.setAttribute("id", "spStop");
+    spStop.setAttribute('radius', '1');
+    spStop.setAttribute('visible', true);
+    spStop.setAttribute('color', 'red');
+    spStop.setAttribute('opacity','0.3');
+    spStop.setAttribute('class', 'clickable');
+    spStop.setAttribute('id', 'spStop');
+
+    scene.appendChild(spStop);*/
+    scene.appendChild(arrival);
+    raycaster.appendChild(g);
+
+    var r1= document.createElement('a-entity');
+    r1.setAttribute('raycaster','objects: .clickable');
+    r1.setAttribute('visible',false);
+
+
+    for(var i=0; i<5; i++){
+        path[i].addEventListener('raycaster-intersected', function(e){
+            scene.emit('first-intersection');
+        })
+    }
+
+    for(var i=0; i<5; i++){
+        path[i].addEventListener('raycaster-intersected-cleared', function(){
+            console.log('una intersezione cleared');
+               if(raycaster.components.raycaster.intersectedEls.length==0){
+                scene.emit('intersection-cleared');
+                } 
+        })
+    }
+
+    spStop.addEventListener('raycaster-intersected', function (e) {
+        if (focused) return;
+        focused = true;
+        spStop.setAttribute('color','green');
+    });
+
+    spStop.addEventListener('raycaster-intersected-cleared', function () {
+        focused = false;
+        spStop.setAttribute('color','red');
+    });
+
+    //quando interseco la prima volta il path...        
+    scene.addEventListener('first-intersection', function changePathControllerToTrue(e){
+        if (pathController) {
+            return;
+        }
+        pathController = true;
+    });   
+
+    arrival.addEventListener('raycaster-intersected', function(){
+        scene.emit('winner');
+    });
+
+    function changePathControllerToFalse() {
+        console.log('sei uscito dal percorso prima di rilasciare il pulsante!');
+        pathController = false;
+        info.setAttribute('visible',true);
+            console.log("HTML: "+startingPoint);
+        spStop.setAttribute('position', startingPoint); 
+        spStop.setAttribute('color', 'red');
+        spStop.setAttribute('radius','1');
+        spStop.setAttribute('opacity','0.3');
+        spStop.setAttribute('visible',true);
+        gift.setAttribute('visible',true);
+            console.log("HTML: "+startingPoint);
+        gift.setAttribute('position',startingPoint);
+        for(var i=0; i<5; i++){
+                path[i].setAttribute('color', '#7a0000');
+            }  
+        scene.emit('finished');
+        return;
+    }
+
+    function winnerFunction(){
+        console.log('intersecato sfera finale!!');
+        var finalText=document.querySelector("#finalText");
+        finalText.setAttribute("visible", true);
+        g.setAttribute('visible','false');
+        finalGift.setAttribute('visible',true);
+        arrival.setAttribute('visible','false');
+        spStop.setAttribute('visible','false');
+        scene.emit('finished');
+    }
+
+    function updateSpherePosition(){
+        console.log('update sphere position');
+        spPosition=rayPosition;
+        for(var i=0; i<5; i++){
+                path[i].setAttribute('color', '#7a0000');
+            } 
+        spStop.setAttribute('visible', true);
+        spStop.setAttribute('color','#ffbf00');
+        spStop.setAttribute('opacity','0.3');
+        g.setAttribute('visible',false);
+        spStop.setAttribute('radius','0.7');
+        spStop.setAttribute('position', spPosition);  
+        gift.setAttribute('position', spPosition);
+        gift.setAttribute('visible', true);
+        controller.removeChild(r1);
+        scene.emit('updateFinished');
+    }
+
+    function lookForPosition(){
+        console.log('look for position');
+        r1.addEventListener('raycaster-intersection',function(e){
+            rayPosition=e.detail.intersections[0].point;
+            scene.emit('rayPositionUpdated');
+        })
+    }
+
+    function doTrackpadUp(){
+        console.log('trackpad rilasciato sul path');
+        controller.appendChild(r1);
+        lookForPosition();
+        scene.addEventListener('rayPositionUpdated', updateSpherePosition);
+        scene.addEventListener('updateFinished', function(){
+                scene.removeEventListener('rayPositionUpdated', updateSpherePosition);
+        });
+        scene.emit('finished');
+    }
+
+    controller.addEventListener('trackpaddown', function() {
+        if(focused){
+            spStop.setAttribute("visible", false);
+            gift.setAttribute('visible', false);
+            g.setAttribute('visible', true);
+            info.setAttribute('visible',false);
+
+            for(var i=0; i<5; i++){
+                path[i].setAttribute('color', '#ff0000');
+            }
+
+            scene.addEventListener('winner', winnerFunction);
+
+            scene.addEventListener('intersection-cleared', changePathControllerToFalse);
+
+            controller.addEventListener('trackpadup', doTrackpadUp);
+
+            scene.addEventListener('finished', function closeEventListeners(){
+                g.setAttribute('visible', false);
+                scene.removeEventListener('winner', winnerFunction);
+                controller.removeEventListener('trackpadup', doTrackpadUp);
+                scene.removeEventListener('intersection-cleared', changePathControllerToFalse);
+            });
+
+
+        }
+        else return;
+    });
+</script>
+</body>

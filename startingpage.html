@@ -1,17 +1,57 @@
+<!DOCTYPE html>  <meta charset=utf-8>
+
 <html>
     <head>
-        <title>WIVR + external controller</title>
-        <script></script>
-        <style>
-            body{
-                color: blue;
-                text-decoration:inherit;
-            }
-        </style>
+        <title>Wivr</title>
+		<meta name="description" content="Wivr Website">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" href="css/index.css">
     </head>
     <body>
-        choose the level you want to play using your DayDream system:
-        <a href="index.html" title="percorso natalizio">trascina i regali sotto l'albero natalizio</a>
-        <a href="tris.html" title="tris">trasporta i pezzi al loro posto ruotandoli nel modo giusto</a>
+        
+            <header>
+                <h1>Wivr with external controller</h1>
+            </header>
+            
+            <p>Scegli il livello</p>
+        
+        <div class="container" id="tris">
+            
+            <table style="width:100%">
+              <tr>
+                <th>Type</th>
+                <th>Level 1</th> 
+                <th>Level 2</th>
+              </tr>
+              <tr>
+                <td>Tris</td>
+                <td><a href="tris1.html">
+                <img src="models/tris1.png" alt="Tris Primo Livello" width="300" height="300">
+            </a></td> 
+                <td><a href="tris2.html">
+                <img src="models/tris2.png" alt="Tris Secondo Livello" width="300" height="300">
+            </a></td>
+              </tr>
+              <tr>
+                <td>Eve</td>
+                <td>Jackson</td> 
+                <td>94</td>
+              </tr>
+            </table>
+            
+   
+        </div>
+        
+        <div class="container" id="drag">
+            <a href="drag1.html">
+                <img src="models/tris1.png" alt="Percorso Primo Livello" width="300" height="300">
+            </a>
+            
+            <a href="drag2.html">
+                <img src="models/tris2.png" alt="Percorso Secondo Livello" width="300" height="377">
+            </a>
+        </div>
+        
+        
     </body>
 </html>
