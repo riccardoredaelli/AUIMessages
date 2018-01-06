@@ -82,22 +82,22 @@ endingObj.setAttribute('scale','1 1 1');
 endingObj.setAttribute('rotation','0 220 0');
 scene.appendChild(endingObj);
 
-var gift=document.createElement('a-entity');
-gift.setAttribute('obj-model','obj: url(models/singleGift/model.obj); mtl: url(models/singleGift/materials.mtl);');
-gift.setAttribute('position', startingPoint.getAttribute("value"));
-gift.setAttribute('scale','0.7 0.7 0.7');
-gift.setAttribute('rotation','40 40 0');
-gift.setAttribute('id','gift');
-scene.appendChild(gift);
+var startingObj=document.createElement('a-entity');
+startingObj.setAttribute('obj-model','obj: url(models/singleGift/model.obj); mtl: url(models/singleGift/materials.mtl);');
+startingObj.setAttribute('position', startingPoint.getAttribute("value"));
+startingObj.setAttribute('scale','0.7 0.7 0.7');
+startingObj.setAttribute('rotation','40 40 0');
+startingObj.setAttribute('id','startingObj');
+scene.appendChild(startingObj);
 
-var giftFinal=document.createElement('a-entity');
-giftFinal.setAttribute('obj-model','obj: url(models/singleGift/model.obj); mtl: url(models/singleGift/materials.mtl);');
-giftFinal.setAttribute('position','3.2 -1.6 8.15');
-giftFinal.setAttribute('scale','0.7 0.7 0.7');
-giftFinal.setAttribute('rotation','40 180 0');
-giftFinal.setAttribute('visible',false);
-giftFinal.setAttribute('id','giftFinal');
-scene.appendChild(giftFinal);
+var finalObj=document.createElement('a-entity');
+finalObj.setAttribute('obj-model','obj: url(models/singleGift/model.obj); mtl: url(models/singleGift/materials.mtl);');
+finalObj.setAttribute('position','3.2 -1.6 8.15');
+finalObj.setAttribute('scale','0.7 0.7 0.7');
+finalObj.setAttribute('rotation','40 180 0');
+finalObj.setAttribute('visible',false);
+finalObj.setAttribute('id','finalObj');
+scene.appendChild(finalObj);
 
 var finalText=document.createElement('a-text');
 finalText.setAttribute("id","finalText");
@@ -120,7 +120,3 @@ spStop.setAttribute('opacity','0.3');
 spStop.setAttribute('class', 'clickable');
 spStop.setAttribute('id', 'spStop');
 scene.appendChild(spStop);
-
-//pacco che sposto sul raycaster
-var g= document.querySelector('g');
-g.setAttribute('position','0  0 -6.5');
