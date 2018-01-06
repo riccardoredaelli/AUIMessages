@@ -27,21 +27,22 @@
         <a-entity id="controller" daydream-controls="hand: right">
             <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0'material='color: red'></a-entity>
         </a-entity>
-        <a-text id='info' value='trascina i regali 
-                                 lungo il percorso' color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text>
+        <a-text id='info' value='porta energia 
+                                alla casa' color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text>
     </a-scene>
     <script src='js/level2Costructor.js'></script>
 <script>
 
     //creato qui perchè da IN JS NON FUNZIONA
-    var g=document.createElement('a-entity');
-    g.setAttribute('obj-model','obj: url(models/singleGift/model.obj); mtl: url(models/singleGift/materials.mtl);');
-    g.setAttribute('scale','0.3 0.3 0.3');
-    g.setAttribute('rotation','0 0 0');
-    g.setAttribute('visible',false);
-    g.setAttribute("id", "g");
+    var draggableObj=document.createElement('a-entity');
+    draggableObj.setAttribute('obj-model','obj: url(models/electricity/lightning.obj); mtl: url(models/electricity/lightning.mtl);');
+    draggableObj.setAttribute('scale','0.3 0.3 0.3');
+    draggableObj.setAttribute('rotation','0 0 0');
+    draggableObj.setAttribute('visible',false);
+    draggableObj.setAttribute("id", "draggableObj");
+    draggableObj.setAttribute('position','0  0 -6.5');
 
-    var finalGift=document.querySelector('#giftFinal');
+    var finalGift=document.querySelector('#finalObj');
     var info=document.querySelector('#info');
     var focused=false;
     var controller=document.querySelector("#controller");
@@ -50,7 +51,7 @@
     var raycaster= document.querySelector('#rc');
     var rayPosition;
     var spPosition;
-    var gift= document.querySelector('#gift');
+    var startingObj= document.querySelector('#startingObj');
     var c1=document.querySelector('#c1');
     var c2= document.querySelector('#c2');
     var c3= document.querySelector('#c3');
@@ -93,7 +94,7 @@
 
     scene.appendChild(spStop);*/
     scene.appendChild(arrival);
-    raycaster.appendChild(g);
+    raycaster.appendChild(draggableObj);
 
     var r1= document.createElement('a-entity');
     r1.setAttribute('raycaster','objects: .clickable');
@@ -148,9 +149,9 @@
         spStop.setAttribute('radius','1');
         spStop.setAttribute('opacity','0.3');
         spStop.setAttribute('visible',true);
-        gift.setAttribute('visible',true);
+        startingObj.setAttribute('visible',true);
             console.log("HTML: "+startingPoint);
-        gift.setAttribute('position',startingPoint);
+        startingObj.setAttribute('position',startingPoint);
         for(var i=0; i<5; i++){
                 path[i].setAttribute('color', '#7a0000');
             }  
@@ -162,7 +163,7 @@
         console.log('intersecato sfera finale!!');
         var finalText=document.querySelector("#finalText");
         finalText.setAttribute("visible", true);
-        g.setAttribute('visible','false');
+        draggableObj.setAttribute('visible','false');
         finalGift.setAttribute('visible',true);
         arrival.setAttribute('visible','false');
         spStop.setAttribute('visible','false');
@@ -178,11 +179,11 @@
         spStop.setAttribute('visible', true);
         spStop.setAttribute('color','#ffbf00');
         spStop.setAttribute('opacity','0.3');
-        g.setAttribute('visible',false);
+        draggableObj.setAttribute('visible',false);
         spStop.setAttribute('radius','0.7');
         spStop.setAttribute('position', spPosition);  
-        gift.setAttribute('position', spPosition);
-        gift.setAttribute('visible', true);
+        startingObj.setAttribute('position', spPosition);
+        startingObj.setAttribute('visible', true);
         controller.removeChild(r1);
         scene.emit('updateFinished');
     }
@@ -209,8 +210,8 @@
     controller.addEventListener('trackpaddown', function() {
         if(focused){
             spStop.setAttribute("visible", false);
-            gift.setAttribute('visible', false);
-            g.setAttribute('visible', true);
+            startingObj.setAttribute('visible', false);
+            draggableObj.setAttribute('visible', true);
             info.setAttribute('visible',false);
 
             for(var i=0; i<5; i++){
@@ -224,7 +225,7 @@
             controller.addEventListener('trackpadup', doTrackpadUp);
 
             scene.addEventListener('finished', function closeEventListeners(){
-                g.setAttribute('visible', false);
+                draggableObj.setAttribute('visible', false);
                 scene.removeEventListener('winner', winnerFunction);
                 controller.removeEventListener('trackpadup', doTrackpadUp);
                 scene.removeEventListener('intersection-cleared', changePathControllerToFalse);
