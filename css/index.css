@@ -1,3 +1,21 @@
+div.box
+{
+    width:1000px !important;  width /**/:200px;
+    height:200px !important; height /**/: 200px;
+    padding: 4px;
+    border:1px solid #EEE; border-right:0 solid;
+    background:url(gradient.png) repeat-x fixed top left;
+    overflow:auto
+}
+
+div.box-inner
+{
+    height: 200px;
+    overflow:auto;
+    margin:25px 24px 0; 
+    padding-right:2px
+}
+
 div.container {
     width: 100%;
     border: 1px solid gray;
@@ -9,6 +27,10 @@ header, footer {
     background-color: black;
     clear: left;
     text-align: center;
+}
+
+#sfondo{
+    background-image: url('backgroundHome.jpg');
 }
 
 nav {
@@ -32,4 +54,19 @@ article {
     border-left: 1px solid gray;
     padding: 1em;
     overflow: hidden;
+}
+
+.sub-grid{
+    margin: 1em;
+    width: 49%;
+}
+
+.sub-grid.t1 {
+    margin: 1em;
+	background:#03C0CA;
+}
+
+.sub-grid1.d1 {
+    margin: 1em;
+	background:#FB623A;
 }
