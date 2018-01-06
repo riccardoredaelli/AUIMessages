@@ -69,10 +69,36 @@ c5.setAttribute('color', '#7a0000');
 c5.setAttribute('radius', '6.7');
 c5.setAttribute('radius-tubular', '0.4');
 c5.setAttribute('rotation', '90 0 -96');
-c5.setAttribute('arc', '102');
+c5.setAttribute('arc', '62.5');
 c5.setAttribute('class', 'clickable');
 c5.setAttribute('shader','flat');
 scene.appendChild(c5);
+
+var c6=document.createElement('a-torus');
+c6.setAttribute('id','c6');
+c6.setAttribute('position', '0 0 0 ');
+c6.setAttribute('color', '#7a0000');
+c6.setAttribute('radius', '8');
+c6.setAttribute('radius-tubular', '0.4');
+c6.setAttribute('rotation', '40 38 -2');
+c6.setAttribute('arc','50');
+c6.setAttribute('class', 'clickable');
+c6.setAttribute('fog', false);
+c6.setAttribute('shader','flat');
+scene.appendChild(c6);
+
+var c7=document.createElement('a-torus');
+c7.setAttribute('id','c7');
+c7.setAttribute('position', '0 0 0 ');
+c7.setAttribute('color', '#7a0000');
+c7.setAttribute('radius', '8');
+c7.setAttribute('radius-tubular', '0.4');
+c7.setAttribute('rotation', '0 40 -5');
+c7.setAttribute('arc','42');
+c7.setAttribute('class', 'clickable');
+c7.setAttribute('fog', false);
+c7.setAttribute('shader','flat');
+scene.appendChild(c7);
 
 //posiziono oggetti partenza e arrivo
 var endingObj=document.createElement('a-entity');
