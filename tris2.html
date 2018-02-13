@@ -4,6 +4,7 @@
   </head>
   <body>
     <a-scene id='scene'>
+        <a-sky id='sky' src='models/background.jpg'></a-sky>
             <a-camera user-height='0'></a-camera>
             <a-entity id="controller" daydream-controls="hand: right">
                 <a-entity id='rc' raycaster="objects: .clickable; showLine: true; interval:10; far:30" position='0 0 0' material='color: red'></a-entity>
@@ -60,6 +61,7 @@
         var scene=document.querySelector('#scene');
         var numOfPieces= 8;
         var numOfTable= 8;
+        var countNumeroDiPezziOK=0;
         var piecesFocused=new Array(numOfPieces);
         for(var i=0; i<numOfPieces; i++){
             piecesFocused[i]=false;
@@ -207,6 +209,12 @@
                 pieces[focused].setAttribute('position', '0 0 0');
                 pieces[focused].setAttribute('rotation', '0 0 0');
                 pieces[focused].setAttribute('opacity', '1');
+                
+                countNumeroDiPezziOK++;
+                if (countNumeroDiPezziOK==table.length){
+                    console.log('sono nell IF FINALE e num di pezzi ok = ' + countNumeroDiPezziOK + '   lunghezza di table.lenght= ' + table.length);
+                    endGame();
+                }
             }
             else{
                 console.log('hai rilasciato nel posto sbagliato');
@@ -218,6 +226,12 @@
         }
         //BISOGNEREBBE MIGLIORARE IL CONTROLLO PER I PEZZI QUADRATI!!!!
         
+        //funzione per finire la partita
+        function endGame(){
+            console.log('giocoFinito');
+            pieces[1].setAttribute('scale', '5 5 5'); //togliere
+        }  
+          
         //ritorna true se giusto; false altrimenti
         function checkRotation(){
             if(pieces[focused].getAttribute('value')=='361'){

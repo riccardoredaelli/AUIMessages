@@ -4,11 +4,15 @@
   </head>
   <body>
     <a-scene id='scene'>
+        <a-sky id='sky' src='models/background.jpg'></a-sky>
             <a-camera user-height='0'></a-camera>
             <a-entity id="controller" daydream-controls="hand: right">
                 <a-entity id='rc' raycaster="objects: .clickable; showLine: true; interval:10; far:30" position='0 0 0' material='color: red'></a-entity>
             </a-entity>
-
+        
+            <!--a-entity obj-model= 'obj: url(models/OKHand/tinker.obj); mtl: url(models/OKHand/obj.mtl)' position='0 0 -4' scale='0.1 0.1 0.1'>
+            </a-entity-->
+            
             <a-entity id="table" class='clickable'  position="0 0 -5" >
                 <a-box id='green' class='table' color="green" opacity='0.5' height="2" width="1" rotation="0 0 0" depth="0.1" position="1.5 1.5 0"></a-box>
                 <a-box id='pink'class='table' color="pink" opacity='0.5' height="2" width="2" rotation="0 0 0" depth="0.1" position="1  -0.5 0"></a-box>
@@ -25,14 +29,14 @@
         
             <!--pezzi sparsi-->     
             <a-entity id='objects' class='clickable'>
-                <a-box id='greenTwo' class='piece'  color="green" height="2" width="1" depth="0.3" rotation="0 0 90" position="3.8 0.8 -5" value='90' ></a-box>
-                <a-box id='pinkSquare' class='piece' color="pink" height="2" width="2" depth="0.3" rotation="0 0 0" position="-2 -5 -5" value='361' ></a-box>
+                <a-box id='greenTwo' class='piece'  color="green" height="2" width="1" depth="0.3" rotation="0 0 90" position="3.8 1.7 -5" value='90' ></a-box>
+                <a-box id='pinkSquare' class='piece' color="pink" height="2" width="2" depth="0.3" rotation="0 0 0" position="-3.8 0 -5" value='361' ></a-box>
                 <a-box  id='redThree' class='piece' color="red" height="1" width="3" depth="0.3" rotation="0 0 0" position="1 4 -5" value='0'></a-box> 
-                <a-entity id='blueFigure' color='blue' class='piece' position="3 -5 -5" rotation='0 0 90' value='90'>
+                <a-entity id='blueFigure' color='blue' class='piece' position="4.2 -0.5 -5" rotation='0 0 90' value='90'>
                     <a-box color="blue" class='piece'  height="1" width="3" depth="0.3" rotation="0 0 0" position="-0.5 1 0"></a-box>
                     <a-box color="blue" class='piece' height="1" width="1" depth="0.3" rotation="0 0 0" position="-0.5 0 0"></a-box>
                 </a-entity>
-                <a-entity id='yellowL' color='yellow' class='piece' position="-3 4 -5" rotation='0 0 -90' value='270'>
+                <a-entity id='yellowL' color='yellow' class='piece' position="-3 3 -5" rotation='0 0 -90' value='270'>
                     <a-box color="yellow" class='piece'  height="1" width="1" depth="0.3" rotation="0 0 0" position="-0.5 -1 0"></a-box>
                     <a-box color="yellow" class='piece'  height="2" width="1" depth="0.3" rotation="0 0 0" position="-1.5 -0.5 0"></a-box>
                 </a-entity>
@@ -47,6 +51,7 @@
         var scene=document.querySelector('#scene');
         var numOfPieces= 5;
         var numOfTable= 5;
+        var countNumeroDiPezziOK=0;
         var piecesFocused=new Array(numOfPieces);
         for(var i=0; i<numOfPieces; i++){
             piecesFocused[i]=false;
@@ -181,6 +186,13 @@
                 pieces[focused].setAttribute('position', '0 0 0');
                 pieces[focused].setAttribute('rotation', '0 0 0');
                 pieces[focused].setAttribute('opacity', '1');
+                
+                countNumeroDiPezziOK++;
+                if (countNumeroDiPezziOK==table.length){
+                    console.log('sono nell IF FINALE e num di pezzi ok = ' + countNumeroDiPezziOK + '   lunghezza di table.lenght= ' + table.length);
+                    endGame();
+                }
+                
             }
             else{
                 console.log('hai rilasciato nel posto sbagliato');
@@ -192,6 +204,13 @@
         }
         //BISOGNEREBBE MIGLIORARE IL CONTROLLO PER I PEZZI QUADRATI!!!!
         
+            
+        //funzione per finire la partita
+        function endGame(){
+            console.log('giocoFinito');
+            pieces[1].setAttribute('scale', '5 5 5'); //togliere
+        }
+            
         //ritorna true se giusto; false altrimenti
         function checkRotation(){
             if(pieces[focused].getAttribute('value')=='361'){
@@ -213,6 +232,7 @@
                     else return false;
                 }
             }
+            
             else{
                 console.log('il pezzo è formato da più elementi');
                 if(pieces[focused].getAttribute('value')=='0'){
