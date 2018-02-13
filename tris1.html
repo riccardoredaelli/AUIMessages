@@ -9,10 +9,17 @@
             <a-entity id="controller" daydream-controls="hand: right">
                 <a-entity id='rc' raycaster="objects: .clickable; showLine: true; interval:10; far:30" position='0 0 0' material='color: red'></a-entity>
             </a-entity>
-        
-            <!--a-entity obj-model= 'obj: url(models/OKHand/tinker.obj); mtl: url(models/OKHand/obj.mtl)' position='0 0 -4' scale='0.1 0.1 0.1'>
-            </a-entity-->
             
+            <a-entity>
+                <a-entity id='mickey' obj-model= 'obj: url(models/mickeyMouse/model.obj); mtl: url(models/mickeyMouse/materials.mtl)' position='0 0.5 -4' scale='2 2 2 ' rotation='0 90 0' visible='false'></a-entity>
+                <a-animation attribute='rotation'
+                             from='0 -20 0'
+                             to='0 20 0'
+                             repeat='indefinite'></a-animation>
+            </a-entity>   
+        
+            <a-text id='finalText'value='wow' color='red' position='-3 2 -3' visible='false'></a-text>
+        
             <a-text id='contatoreErrori' value='numero di errori commessi: 0' position='-1.5 -2.5 -5' color='red'></a-text>
         
             <a-entity id="table" class='clickable'  position="0 0 -5" >
@@ -52,6 +59,8 @@
         var raycaster=document.querySelector('#rc');
         var controller=document.querySelector('#controller');
         var scene=document.querySelector('#scene');
+        var mickey=document.querySelector('#mickey');
+        var endingText=document.querySelector('#finalText');
         var numOfPieces= 5;
         var numOfTable= 5;
         var countNumeroDiPezziOK=0;
@@ -168,7 +177,17 @@
             objects.removeChild(pieces[focused]);
             raycaster.appendChild(pieces[focused]);
             pieces[focused].setAttribute('scale', '0.6 0.6 0.6');
-            pieces[focused].setAttribute('position', '0 0 -4.2');
+            if(focused==3){
+                pieces[focused].setAttribute('position', '0.5 -0.5 -4.2');//da mettere a posto la posizione sul raycaster con qualche prova
+            }
+            
+            if(focused==4){
+                pieces[focused].setAttribute('position', '0.5 -0.5 -4.2');//da mettere a posto la posizione sul raycaster con qualche prova
+            }
+                
+            else{
+                pieces[focused].setAttribute('position', '0 0 -4.2');
+            }
             controller.addEventListener('trackpadup', doTrackpadUp);
             scene.addEventListener('trackpadUpFinished', removeListeners);
         })
@@ -214,7 +233,25 @@
         //funzione per finire la partita
         function endGame(){
             console.log('giocoFinito');
-            pieces[1].setAttribute('scale', '5 5 5'); //togliere
+            scene.emit('endGame');
+            //sleep(2000);
+            for(var i=0; i<table.length; i++){
+                table[i].setAttribute('visible', false);
+                pieces[i].setAttribute('visible', false);
+            }
+            errorCountText.setAttribute('visible',false);
+            mickey.setAttribute('visible',true);
+            endingText.setAttribute('visible',true);
+            endingText.setAttribute('value', 'Complimenti, hai finito il livello e hai commesso '+ errorCounter + ' errori');
+        }
+        
+        function sleep(milliseconds) {
+            var start = new Date().getTime();
+            for (var i = 0; i < 1e7; i++) {
+                if ((new Date().getTime() - start) > milliseconds){
+                    break;
+                }
+            }
         }
             
         //ritorna true se giusto; false altrimenti
