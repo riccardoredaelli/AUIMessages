@@ -10,6 +10,8 @@
                 <a-entity id='rc' raycaster="objects: .clickable; showLine: true; interval:10; far:30" position='0 0 0' material='color: red'></a-entity>
             </a-entity>
 
+            <a-text id='contatoreErrori' value='numero di errori commessi: 0' position='-1.5 -2.5 -5' color='red'></a-text>
+                
             <a-entity id="table" class='clickable'  position="0 0 -5" >
                 <a-box id='yellow' class='table' color="yellow" opacity='0.5' height="1" width="4" rotation="0 0 0" depth="0.01" position="-0.5 2.5 0"></a-box>
                 <a-box id='pink'class='table' color="pink" opacity='0.5' height="1" width="1" rotation="0 0 0" depth="0.01" position="0 1.5"></a-box>
@@ -115,7 +117,8 @@
         var textPosition= document.createElement('a-text');
         textPosition.setAttribute('visible', 'false');
         scene.appendChild(textPosition);
-        
+        var errorCountText= document.querySelector('#contatoreErrori');
+        var errorCounter=0;
         
         // cambia pathfocused e tablefocused in true (per table fa un bel giro e mette anche su false)
         raycaster.addEventListener('raycaster-intersection', function(e){
@@ -221,6 +224,8 @@
                 objects.appendChild(pieces[focused]);
                 console.log('posizione dove dovrebbe essere rilasciato l oggetto: ' + textPosition.getAttribute('value') );
                 pieces[focused].setAttribute('position', textPosition.getAttribute('value'));
+                errorCounter++;
+                errorCountText.setAttribute('value', 'numero di errori commessi: '+ errorCounter);
             }
             scene.emit('trackpadUpFinished');
         }
