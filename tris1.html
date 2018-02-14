@@ -9,7 +9,11 @@
             <a-entity id="controller" daydream-controls="hand: right">
                 <a-entity id='rc' raycaster="objects: .clickable; showLine: true; interval:10; far:30" position='0 0 0' material='color: red'></a-entity>
             </a-entity>
-            
+        
+            <a-sound id='winnerSound' src='models/sounds/winnerEffect.mp3' loop='true'></a-sound>
+            <a-sound id='correctSound' src='models/sounds/correctEffect.mp3' loop='false'></a-sound>
+            <a-sound id='errorSound' src='models/sounds/errorEffect.mp3' loop='false'></a-sound>
+        
             <a-entity>
                 <a-entity id='mickey' obj-model= 'obj: url(models/mickeyMouse/model.obj); mtl: url(models/mickeyMouse/materials.mtl)' position='0 0.5 -4' scale='2 2 2 ' rotation='0 90 0' visible='false'></a-entity>
                 <a-animation attribute='rotation'
@@ -18,7 +22,7 @@
                              repeat='indefinite'></a-animation>
             </a-entity>   
         
-            <a-text id='finalText'value='wow' color='red' position='-3 2 -3' visible='false'></a-text>
+            <a-text id='finalText'value='wow' color='red' position='-3 2 -5' visible='false'></a-text>
         
             <a-text id='contatoreErrori' value='numero di errori commessi: 0' position='-1.5 -2.5 -5' color='red'></a-text>
         
@@ -209,7 +213,7 @@
                 pieces[focused].setAttribute('position', '0 0 0');
                 pieces[focused].setAttribute('rotation', '0 0 0');
                 pieces[focused].setAttribute('opacity', '1');
-                
+                // correctSound.setAttribute('on'); effetto musicale giusto!
                 countNumeroDiPezziOK++;
                 if (countNumeroDiPezziOK==table.length){
                     console.log('sono nell IF FINALE e num di pezzi ok = ' + countNumeroDiPezziOK + '   lunghezza di table.lenght= ' + table.length);
@@ -224,6 +228,7 @@
                 pieces[focused].setAttribute('position', textPosition.getAttribute('value'));
                 errorCounter++;
                 errorCountText.setAttribute('value', 'numero di errori commessi: '+ errorCounter);
+                //errorSound.setAttribute('on'); effetto musicale di errore
             }
             scene.emit('trackpadUpFinished');
         }
@@ -243,6 +248,10 @@
             mickey.setAttribute('visible',true);
             endingText.setAttribute('visible',true);
             endingText.setAttribute('value', 'Complimenti, hai finito il livello e hai commesso '+ errorCounter + ' errori');
+           /* winnerSound=document.createElement('a-sound');
+            winnerSound.setAttribute('src', 'document/sounds/winnerEffect.mp3');
+            winnerSound.setAttribute('autoplay', true);
+            winnerSound.setAttribute('loop', true);*/  //sound finale!! 
         }
         
         function sleep(milliseconds) {
