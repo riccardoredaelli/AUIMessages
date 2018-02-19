@@ -1,0 +1,42 @@
+<!DOCTYPE html>  <meta charset=utf-8>
+
+<html>
+	<head>
+		<title>VR GameBox</title>
+		<meta name="description" content="TIM Website">   
+        <link rel="stylesheet" href="css/index-noB.css">
+
+	</head>
+    
+    <header>
+        <h1>VR GameBox</h1>
+    </header>
+    
+	<body style="background-image: url(models/image/background.jpg)">
+		<div class="container" id="main">
+
+			<div class="row" id="features">
+				
+					<div id="orizzontale" style="float:left;">
+						<div>
+							<h3>Puzzle lv.1</h3>
+						</div>
+						<a href="tris1.html">
+                            <img src="models/tris1.png" width="150" height="150">
+                        </a>
+						<p>Semplice. Contiene 5 elementi</p>
+				    </div>
+                    
+                    <div id="orizzontale" style="float:left;">
+						<div>
+							<h3>Puzzle lv.2</h3>
+						</div>
+						<a href="tris2.html">
+                            <img src="models/tris2.png" width="150" height="150">
+                        </a>
+						<p>Difficile. Contiene 9 elementi</p>
+				    </div>
+            </div>
+        </div>
+	</body>
+</html>
