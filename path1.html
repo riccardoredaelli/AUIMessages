@@ -34,13 +34,21 @@
         
         
         <a-text id='finalText' rotation='0 179 0' color='green' position='-0.695 0.5 7.63' scale='2.5 2.5 2.5'></a-text>
-        <a-entity>
-            <a-entity id='mickey' obj-model= 'obj: url(models/mickeyMouse/model.obj); mtl: url(models/mickeyMouse/materials.mtl)' position='3 0.85 6.5' scale='2 2 2 ' rotation='0 330 0' visible='false'></a-entity>
-            <!--a-animation attribute='rotation'
-                         from='0 -10 0'
-                         to='0 10 0'
-                         repeat='indefinite'></a-animation-->
+        <a-entity id='mickey' visible='false'>
+            <a-entity  obj-model= 'obj: url(models/mickeyMouse/model.obj); mtl: url(models/mickeyMouse/materials.mtl)' position='3 0.85 6.5' scale='2 2 2 ' rotation='0 330 0' ></a-entity>
+            <a-entity obj-model= 'obj: url(models/balloons/model.obj); mtl: url(models/balloons/materials.mtl)' position='2 2.85  6.5' scale='2 2 2' rotation='0 90 0'></a-entity>
+            <a-animation attribute='rotation'
+                         from='0 -5 0'
+                         to='0 5 0'
+                         dur='2000'
+                         repeat='indefinite'></a-animation>
         </a-entity>   
+        <a-entity id='mickey' visible='false'>
+                <a-animation attribute='rotation'
+                             from='0 -20 0'
+                             to='0 20 0'
+                             repeat='indefinite'></a-animation>
+            </a-entity> 
     </a-scene>
     <script src='js/level1Costructor.js'></script>
 <script>
