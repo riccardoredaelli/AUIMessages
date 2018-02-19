@@ -6,16 +6,18 @@
     <a-scene id='scene'>
         <a-sky id='sky' src='models/background.jpg'></a-sky>
             <a-camera user-height='0'></a-camera>
-            <a-entity id="controller" daydream-controls="hand: right">
+            <a-entity id="controller" daydream-controls>
                 <a-entity id='rc' raycaster="objects: .clickable; showLine: true; interval:10; far:30" position='0 0 0' material='color: red'></a-entity>
             </a-entity>
         
             <a-entity id='winnerSound' sound='src:url(models/sounds/winnerEffect.mp3); volume:0.5' position='0 0 0'></a-entity>
             <a-entity id='correctSound' sound='src:url(models/sounds/correctEffect.mp3)' position='0 0 0'></a-entity>
             <a-entity id='errorSound' sound='src: url(models/sounds/errorEffect.mp3); volume:1.5' position='0 0 0'></a-entity>
-        
-            <a-entity>
-                <a-entity id='mickey' obj-model= 'obj: url(models/mickeyMouse/model.obj); mtl: url(models/mickeyMouse/materials.mtl)' position='0 0.5 -4' scale='2 2 2 ' rotation='0 90 0' visible='false'></a-entity>
+            
+            <a-entity id='mickey' visible='false'>
+                <a-entity obj-model= 'obj: url(models/balloons/model.obj); mtl: url(models/balloons/materials.mtl)' position='0.55 2.7 -4' scale='2 2 2 ' rotation='0 90 0'>
+                </a-entity>
+                <a-entity obj-model= 'obj: url(models/mickeyMouse/model.obj); mtl: url(models/mickeyMouse/materials.mtl)' position='0 0.5 -4' scale='2 2 2 ' rotation='0 90 0'></a-entity>
                 <a-animation attribute='rotation'
                              from='0 -20 0'
                              to='0 20 0'
