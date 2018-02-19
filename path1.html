@@ -30,6 +30,7 @@
         <a-text id='info' value='trascina i regali 
                                  lungo il percorso' color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text>
         <a-text id='stats' value='hai utilizzato 0 checkpoint e sei uscito dal percorso 0 volte' rotation='0 -30 0' color='green' position='0 -2 -5' scale='2.5 2.5 2.5'></a-text>
+        <a-text id='finalText' rotation='0 -30 0' scale='2 2 2' color='red'></a-text>
     </a-scene>
     <script src='js/level1Costructor.js'></script>
 <script>
@@ -159,7 +160,7 @@
         stats.setAttribute('visible',false);
         var finalText=document.querySelector("#finalText");
         finalText.setAttribute("visible", true);
-        finalText.setAttribute('value', 'complimenti!! hai completato il livello utilizzando '+countCheckpoints+' checkpoint e uscendo dal percorso '+countExitFromPath+' volte!');
+        finalText.setAttribute('value', 'complimenti!! hai completato il livello utilizzando '+ countCheckpoints + ' checkpoint e uscendo dal percorso ' + countExitFromPath + ' volte!');
         draggableObj.setAttribute('visible','false');
         finalGift.setAttribute('visible',true);
         arrival.setAttribute('visible','false');
