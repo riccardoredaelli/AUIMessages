@@ -27,7 +27,12 @@
         <a-entity id="controller" daydream-controls>
             <a-entity id='rc' raycaster="objects: .clickable ; showLine: true; interval:10; far:30" position='0 0 0'material='color: red'></a-entity>
         </a-entity>
-        <a-text id='info' value='Trascina i regali 
+        
+        <a-entity id='winnerSound' sound='src:url(models/sounds/winnerEffect.mp3); volume:0.5' position='0 0 0'></a-entity>
+        <a-entity id='correctSound' sound='src:url(models/sounds/correctEffect.mp3)' position='0 0 0'></a-entity>
+        <a-entity id='errorSound' sound='src: url(models/sounds/errorEffect.mp3); volume:1.5' position='0 0 0'></a-entity>
+        
+        <a-text id='info' value='trascina i regali 
                                  lungo il percorso' font="kelsonsans" color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text>
         
         <a-text id='stats' visible="true" value='Checkpoint: 0
@@ -54,7 +59,9 @@
     <script src='js/level1Costructor.js'></script>
 <script>
 
-    //creato qui perchè da IN JS NON FUNZIONA
+    var winnerSound=document.querySelector('#winnerSound');
+    var errorSound=document.querySelector('#errorSound');
+    var correctSound=document.querySelector('#correctSound');
     var draggableObj=document.createElement('a-entity');
     draggableObj.setAttribute('obj-model','obj: url(models/singleGift/model.obj); mtl: url(models/singleGift/materials.mtl);');
     draggableObj.setAttribute('scale','0.3 0.3 0.3');
@@ -155,6 +162,7 @@
 
     function changePathControllerToFalse() {
         console.log('sei uscito dal percorso prima di rilasciare il pulsante!');
+        errorSound.components.sound.playSound();
         countExitFromPath++;
         stats.setAttribute('value','Checkpoint: '+countCheckpoints+' \nErrori: '+countExitFromPath);
         pathController = false;
@@ -176,6 +184,7 @@
     }
 
     function winnerFunction(){
+        winnerSound.components.sound.playSound();
         console.log('intersecato sfera finale!!');
         stats.setAttribute('visible',false);
         var finalText=document.querySelector("#finalText");
@@ -222,6 +231,7 @@
 
     function doTrackpadUp(){
         console.log('trackpad rilasciato sul path');
+        correctSound.components.sound.playSound();
         countCheckpoints++;
         stats.setAttribute('value','Checkpoint: '+countCheckpoints+' \nErrori: '+countExitFromPath);
         controller.appendChild(r1);
@@ -235,6 +245,7 @@
 
     controller.addEventListener('trackpaddown', function() {
         if(focused){
+            correctSound.components.sound.playSound();
             spStop.setAttribute("visible", false);
             startingObj.setAttribute('visible', false);
             draggableObj.setAttribute('visible', true);
