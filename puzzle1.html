@@ -243,7 +243,6 @@
         //funzione per finire la partita
         function endGame(){
             console.log('giocoFinito');
-            //sleep(2000);
             for(var i=0; i<table.length; i++){
                 table[i].setAttribute('visible', false);
                 pieces[i].setAttribute('visible', false);
@@ -253,15 +252,6 @@
             endingText.setAttribute('visible',true);
             endingText.setAttribute('value', 'Complimenti, hai finito il livello e hai commesso '+ errorCounter + ' errori');
             winnerSound.components.sound.playSound();
-        }
-        
-        function sleep(milliseconds) {
-            var start = new Date().getTime();
-            for (var i = 0; i < 1e7; i++) {
-                if ((new Date().getTime() - start) > milliseconds){
-                    break;
-                }
-            }
         }
             
         //ritorna true se giusto; false altrimenti
