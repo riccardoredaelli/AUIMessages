@@ -10,6 +10,10 @@
                 <a-entity id='rc' raycaster="objects: .clickable; showLine: true; interval:10; far:30" position='0 0 0' material='color: red'></a-entity>
             </a-entity>
 
+            <a-entity id='winnerSound' sound='src:url(models/sounds/winnerEffect.mp3); volume:0.5' position='0 0 0'></a-entity>
+            <a-entity id='correctSound' sound='src:url(models/sounds/correctEffect.mp3)' position='0 0 0'></a-entity>
+            <a-entity id='errorSound' sound='src: url(models/sounds/errorEffect.mp3); volume:1.5' position='0 0 0'></a-entity>
+        
             <a-entity>
                 <a-entity id='mickey' obj-model= 'obj: url(models/mickeyMouse/model.obj); mtl: url(models/mickeyMouse/materials.mtl)' position='0 0.5 -4' scale='2 2 2 ' rotation='0 90 0' visible='false'></a-entity>
                 <a-animation attribute='rotation'
@@ -37,7 +41,7 @@
                     <a-box color="green" class='table' opacity='0.5' height="2" width="1" rotation="0 0 0" depth="0.01" position="0 0 0"></a-box>
                     <a-box color="green" class='table' opacity='0.5' height="1" width="1" rotation="0 0 0" depth="0.01" position="1 0.5 0"></a-box>
                 </a-entity>
-                <a-entity id='orange' color="green"  class='table'>
+                <a-entity id='orange' color="orange"  class='table'>
                     <a-box color="orange" class='table' opacity='0.5' height="2" width="2" rotation="0 0 0" depth="0.01" position="-1.5 -1 0"></a-box>
                     <a-box color="orange" class='table' opacity='0.5' height="1" width="1" rotation="0 0 0" depth="0.01" position="0 -1.5 0"></a-box>
                 </a-entity>
@@ -59,7 +63,7 @@
                     <a-box color="green" class='piece'  height="2" width="1" depth="0.3" rotation="0 0 0" position="0 0 0"></a-box>
                     <a-box color="green" class='piece'  height="1" width="1" depth="0.3" rotation="0 0 0" position="-1 0.5 0"></a-box>
                 </a-entity>
-                <a-entity id='orangePiece' color='orange' class='piece' position="-4.5 1 -5" rotation='0 0 90' value='90'><!-- controllare ROTAZIONE!!!!-->
+                <a-entity id='orangePiece' color='orange' class='piece' position="-4.5 1 -5" rotation='0 0 90' value='270'><!-- controllare ROTAZIONE!!!!-->
                     <a-box color="orange" class='piece'  height="2" width="2" depth="0.3" rotation="0 0 0" position="0 0 0"></a-box>
                     <a-box color="orange" class='piece' height="1" width="1" depth="0.3" rotation="0 0 0" position="-1.5 0.5 0"></a-box>
                 </a-entity>
@@ -68,6 +72,9 @@
         </a-scene>
       
       <script>
+        var winnerSound=document.querySelector('#winnerSound');
+        var errorSound=document.querySelector('#errorSound');
+        var correctSound=document.querySelector('#correctSound');
         var objects=document.querySelector('#objects');
         var raycaster=document.querySelector('#rc');
         var controller=document.querySelector('#controller');
@@ -155,7 +162,7 @@
         function checkIfContainedInPath(e , i){
             for(var j=0; j<e.detail.els.length; j++){
                 if (e.detail.els[j].getAttribute('color')==pieces[i].getAttribute('color') && e.detail.els[j].getAttribute('class')=='piece') { 
-                    //console.log('hai intersecato l oggetto: ' + pieces[i].getAttribute('id'));
+                    console.log('hai intersecato l oggetto: ' + pieces[i].getAttribute('id'));
                     return true;
                 }
             }
@@ -166,7 +173,7 @@
             for(var j=0; j<e.detail.els.length; j++){
                 if (e.detail.els[j].getAttribute('color')==table[i].getAttribute('color') && e.detail.els[j].getAttribute('class')=='table'){
                     tableFocused[i]=true;
-                    //console.log('un pezzo del table è focused: ' +table[i].getAttribute('id'));
+                    console.log('un pezzo del table è focused: ' +table[i].getAttribute('color'));
                     for(var z=0; z<numOfTable; z++){
                         if(z!=i)
                         tableFocused[z]=false;
@@ -197,6 +204,7 @@
                 }
             }
             if (focused==-1) {
+                errorSound.components.sound.playSound();
                 console.log('non puntavi su nessun pezzo quando hai cliccato');
                 return; //return se nessun pezzo è focalizzato!
                 }   
@@ -216,7 +224,7 @@
         
         //funzione per quando rilascio il trackpad, deve controllare se sono o no sull'oggetto desideraro. nel caso lascio giù l'oggetto, altrimenti lo faccio tornare alla posizione iniziale. alla fine emette un trackpadUpFinisced sulla scena.
         function doTrackpadUp(){
-            console.log('hai rilasciato il trackpad e sei nella funzione dotrackpadup');
+            console.log('hai rilasciato il trackpad e sei nella funzione dotrackpadup e table focused = ' + tableFocused[focused] + ' e focused = ' + focused);
             raycaster.removeChild(pieces[focused]);
             pieces[focused].setAttribute('scale','1 1 1');
             if(tableFocused[focused]==true && checkRotation()){//se posto ok + aggioungere funzione checkrotation
@@ -225,7 +233,7 @@
                 pieces[focused].setAttribute('position', '0 0 0');
                 pieces[focused].setAttribute('rotation', '0 0 0');
                 pieces[focused].setAttribute('opacity', '1');
-                
+                correctSound.components.sound.playSound();
                 countNumeroDiPezziOK++;
                 if (countNumeroDiPezziOK==table.length){
                     console.log('sono nell IF FINALE e num di pezzi ok = ' + countNumeroDiPezziOK + '   lunghezza di table.lenght= ' + table.length);
@@ -233,6 +241,7 @@
                 }
             }
             else{
+                errorSound.components.sound.playSound();
                 console.log('hai rilasciato nel posto sbagliato');
                 objects.appendChild(pieces[focused]);
                 console.log('posizione dove dovrebbe essere rilasciato l oggetto: ' + textPosition.getAttribute('value') );
@@ -247,7 +256,6 @@
         //funzione per finire la partita
         function endGame(){
             console.log('giocoFinito');
-            scene.emit('endGame');
             //sleep(2000);
             for(var i=0; i<table.length; i++){
                 table[i].setAttribute('visible', false);
@@ -257,6 +265,7 @@
             mickey.setAttribute('visible',true);
             endingText.setAttribute('visible',true);
             endingText.setAttribute('value', 'Complimenti, hai finito il livello e hai commesso '+ errorCounter + ' errori');
+            winnerSound.components.sound.playSound();
         }
         
         function sleep(milliseconds) {

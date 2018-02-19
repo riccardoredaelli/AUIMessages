@@ -10,9 +10,9 @@
                 <a-entity id='rc' raycaster="objects: .clickable; showLine: true; interval:10; far:30" position='0 0 0' material='color: red'></a-entity>
             </a-entity>
         
-            <a-sound id='winnerSound' src='models/sounds/winnerEffect.mp3' loop='true'></a-sound>
-            <a-sound id='correctSound' src='models/sounds/correctEffect.mp3' loop='false'></a-sound>
-            <a-sound id='errorSound' src='models/sounds/errorEffect.mp3' loop='false'></a-sound>
+            <a-entity id='winnerSound' sound='src:url(models/sounds/winnerEffect.mp3); volume:0.5' position='0 0 0'></a-entity>
+            <a-entity id='correctSound' sound='src:url(models/sounds/correctEffect.mp3)' position='0 0 0'></a-entity>
+            <a-entity id='errorSound' sound='src: url(models/sounds/errorEffect.mp3); volume:1.5' position='0 0 0'></a-entity>
         
             <a-entity>
                 <a-entity id='mickey' obj-model= 'obj: url(models/mickeyMouse/model.obj); mtl: url(models/mickeyMouse/materials.mtl)' position='0 0.5 -4' scale='2 2 2 ' rotation='0 90 0' visible='false'></a-entity>
@@ -58,7 +58,9 @@
         </a-scene>
       
     <script>
-        
+        var winnerSound=document.querySelector('#winnerSound');
+        var errorSound=document.querySelector('#errorSound');
+        var correctSound=document.querySelector('#correctSound');
         var objects=document.querySelector('#objects');
         var raycaster=document.querySelector('#rc');
         var controller=document.querySelector('#controller');
@@ -175,6 +177,7 @@
                 }
             }
             if (focused==-1) {
+                errorSound.components.sound.playSound();
                 console.log('non puntavi su nessun pezzo quando hai cliccato');
                 return; //return se nessun pezzo è focalizzato!
                 }   
@@ -182,11 +185,11 @@
             raycaster.appendChild(pieces[focused]);
             pieces[focused].setAttribute('scale', '0.6 0.6 0.6');
             if(focused==3){
-                pieces[focused].setAttribute('position', '0.5 -0.5 -4.2');//da mettere a posto la posizione sul raycaster con qualche prova
+                pieces[focused].setAttribute('position', '0.5 0.25 -4.2');//blu da mettere a posto la posizione sul raycaster con qualche prova
             }
             
-            if(focused==4){
-                pieces[focused].setAttribute('position', '0.5 -0.5 -4.2');//da mettere a posto la posizione sul raycaster con qualche prova
+            else if(focused==4){
+                pieces[focused].setAttribute('position', '0.6 -0.75 -4.2');//giallo da mettere a posto la posizione sul raycaster con qualche prova
             }
                 
             else{
@@ -209,11 +212,12 @@
             pieces[focused].setAttribute('scale','1 1 1');
             if(tableFocused[focused]==true && checkRotation()){//se posto ok + aggioungere funzione checkrotation
                 console.log('bravo, hai rilasciato nel posto giusto');
+
                 table[focused].appendChild(pieces[focused]);
                 pieces[focused].setAttribute('position', '0 0 0');
                 pieces[focused].setAttribute('rotation', '0 0 0');
                 pieces[focused].setAttribute('opacity', '1');
-                // correctSound.setAttribute('on'); effetto musicale giusto!
+                correctSound.components.sound.playSound();
                 countNumeroDiPezziOK++;
                 if (countNumeroDiPezziOK==table.length){
                     console.log('sono nell IF FINALE e num di pezzi ok = ' + countNumeroDiPezziOK + '   lunghezza di table.lenght= ' + table.length);
@@ -222,13 +226,14 @@
                 
             }
             else{
+
                 console.log('hai rilasciato nel posto sbagliato');
                 objects.appendChild(pieces[focused]);
                 console.log('posizione dove dovrebbe essere rilasciato l oggetto: ' + textPosition.getAttribute('value') );
                 pieces[focused].setAttribute('position', textPosition.getAttribute('value'));
                 errorCounter++;
                 errorCountText.setAttribute('value', 'numero di errori commessi: '+ errorCounter);
-                //errorSound.setAttribute('on'); effetto musicale di errore
+                errorSound.components.sound.playSound();
             }
             scene.emit('trackpadUpFinished');
         }
@@ -238,8 +243,6 @@
         //funzione per finire la partita
         function endGame(){
             console.log('giocoFinito');
-            scene.emit('endGame');
-            //sleep(2000);
             for(var i=0; i<table.length; i++){
                 table[i].setAttribute('visible', false);
                 pieces[i].setAttribute('visible', false);
@@ -248,19 +251,7 @@
             mickey.setAttribute('visible',true);
             endingText.setAttribute('visible',true);
             endingText.setAttribute('value', 'Complimenti, hai finito il livello e hai commesso '+ errorCounter + ' errori');
-           /* winnerSound=document.createElement('a-sound');
-            winnerSound.setAttribute('src', 'document/sounds/winnerEffect.mp3');
-            winnerSound.setAttribute('autoplay', true);
-            winnerSound.setAttribute('loop', true);*/  //sound finale!! 
-        }
-        
-        function sleep(milliseconds) {
-            var start = new Date().getTime();
-            for (var i = 0; i < 1e7; i++) {
-                if ((new Date().getTime() - start) > milliseconds){
-                    break;
-                }
-            }
+            winnerSound.components.sound.playSound();
         }
             
         //ritorna true se giusto; false altrimenti
