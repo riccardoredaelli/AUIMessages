@@ -21,6 +21,7 @@
                 <a-animation attribute='rotation'
                              from='0 -20 0'
                              to='0 20 0'
+                             dur='2000'
                              repeat='indefinite'></a-animation>
             </a-entity>   
         
@@ -281,15 +282,15 @@
         //ritorna true se giusto; false altrimenti
         function checkRotation(){
             if(pieces[focused].getAttribute('value')=='361'){
-                return true;//value = 361 in tutti i pezzi che vanno bene in qualunque verso
-            }
-            if(pieces[focused].childElementCount==0){
-                console.log('il pezzo è formato da un solo elemento');
-                if(focused==1){ //ritorna true se l'oggetto è il numero 1, in questo caso unn quadrato!
+               if((controller.object3D.rotation._z<0.35 && controller.object3D.rotation._z>-0.35) ||                              (controller.object3D.rotation._z>2.7 || controller.object3D.rotation._z< -2.7)||
+                    (controller.object3D.rotation._z>1.2 && controller.object3D.rotation._z <1.8 )|| (controller.object3D.rotation._z>-1.8 && controller.object3D.rotation._z<-1.2))
                     return true;
-                }
+                else return false;
+            }
+            else if(pieces[focused].childElementCount==0){
+                console.log('il pezzo è formato da un solo elemento');
                 if(pieces[focused].getAttribute('value')=='0' || pieces[focused].getAttribute('value')=='180'){
-                    if((controller.object3D.rotation._z<0.3 && controller.object3D.rotation._z>-0.3) || (controller.object3D.rotation._z>2.7 && controller.object3D.rotation._z< -2.7))
+                    if((controller.object3D.rotation._z<0.35 && controller.object3D.rotation._z>-0.35) || (controller.object3D.rotation._z>2.7 || controller.object3D.rotation._z<-2.7))
                         return true;
                     else return false;
                 }  
@@ -299,6 +300,7 @@
                     else return false;
                 }
             }
+            
             else{
                 console.log('il pezzo è formato da più elementi');
                 if(pieces[focused].getAttribute('value')=='0'){
@@ -314,7 +316,7 @@
                 }
                 
                 if(pieces[focused].getAttribute('value')=='180'){
-                    if(controller.object3D.rotation._z>2.7 && controller.object3D.rotation._z< -2.7)
+                    if(controller.object3D.rotation._z>2.7 || controller.object3D.rotation._z< -2.7)
                         return true;
                     else return false;
                 }
