@@ -32,9 +32,21 @@
         <a-entity id='correctSound' sound='src:url(models/sounds/correctEffect.mp3)' position='0 0 0'></a-entity>
         <a-entity id='errorSound' sound='src: url(models/sounds/errorEffect.mp3); volume:1.5' position='0 0 0'></a-entity>
         
-        <a-text id='info' value='porta energia 
+        <a-text id='info' font="exo2semibold" value='Porta energia 
                                 alla casa' color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text>
-        <a-text id='stats' value='hai utilizzato 0 checkpoint e sei uscito dal percorso 0 volte' rotation='0 -30 0' color='green' position='0 -2 -5' scale='2.5 2.5 2.5'></a-text>
+        <a-text id='stats' font="exo2semibold" value='Checkpoint: 0
+                                                 Errori: 0' rotation='0 -30 0' color='green' position='0 -2 -5' scale='2.5 2.5 2.5'></a-text>
+        <a-text id='finalText' visible="true" value="hai vinto baby!" font="exo2semibold" rotation='0 179 0' color='green' position='-0.695 0.5 7.63' scale='2.5 2.5 2.5'></a-text>
+        
+        <a-entity id='mickey' visible='true'>
+            <a-entity  obj-model= 'obj: url(models/mickeyMouse/model.obj); mtl: url(models/mickeyMouse/materials.mtl)' position='3 0.85 6.5' scale='2 2 2 ' rotation='0 330 0' ></a-entity>
+            <a-entity obj-model= 'obj: url(models/balloons/model.obj); mtl: url(models/balloons/materials.mtl)' position='2 2.85  6.5' scale='2 2 2' rotation='0 90 0'></a-entity>
+            <a-animation attribute='rotation'
+                         from='0 -5 0'
+                         to='0 5 0'
+                         dur='2000'
+                         repeat='indefinite'></a-animation>
+        </a-entity>
     </a-scene>
     <script src='js/level2Costructor.js'></script>
 <script>
