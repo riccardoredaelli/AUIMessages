@@ -19,19 +19,16 @@ h1{
 /* --------------------------------------
    Layout
    -------------------------------------- */
-.text-justify {
-    text-align: justify;
+#features {
+	text-align: center;
 }
 
-.text-left {
+#features img {
+	margin: 0 0 20px;
+}
+
+#orientation {
     text-align: left;
-}
-
-.description-text{
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    -o-text-overflow:ellipsis;
 }
 
 /* --------------------------------------
