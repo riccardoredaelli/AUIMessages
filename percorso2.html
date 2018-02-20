@@ -66,11 +66,11 @@
     var correctSound=document.querySelector('#correctSound');
     var draggableObj=document.createElement('a-entity');
     draggableObj.setAttribute('obj-model','obj: url(models/lightBulb/object.obj); mtl: url(models/lightBulb/materials.mtl);');
-    draggableObj.setAttribute('scale','1 1 1');
-    draggableObj.setAttribute('rotation','0 0 0');
+    draggableObj.setAttribute('scale','0.0025 0.0025 0.0025');
+    draggableObj.setAttribute('rotation','-90 0 0');
     draggableObj.setAttribute('visible',false);
     draggableObj.setAttribute("id", "draggableObj");
-    draggableObj.setAttribute('position','-0.1  0 -6.5');
+    draggableObj.setAttribute('position','0 -0.5 -6.5');
 
     var stats=document.querySelector('#stats');
     var countCheckpoints=0;
