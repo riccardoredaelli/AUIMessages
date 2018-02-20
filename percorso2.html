@@ -35,7 +35,7 @@
         <a-text id='info' font="exo2semibold" value='Porta energia 
                                 alla casa' color='yellow' position='-5 1.7 -5.7' rotation='0 30 0' scale='2 2 2'></a-text>
         <a-text id='stats' font="exo2semibold" value='Checkpoint: 0
-                                                 Errori: 0' rotation='0 -30 0' color='green' position='0 -2 -5' scale='2.5 2.5 2.5'></a-text>
+                                                 Errori: 0' rotation='0 -29.790 0' color='green' position='2.267 0.172 -7.065' scale='2 2 2'></a-text>
         <a-text id='finalText' font="exo2semibold" rotation='0 179 0' color='green' position='-0.695 0.5 7.63' scale='2.5 2.5 2.5'></a-text>
         
         <a-entity id='mickey' visible='false'>
@@ -189,6 +189,14 @@
         arrival.setAttribute('visible','false');
         spStop.setAttribute('visible','false');
         scene.emit('finished');
+        mickey.setAttribute('visible',true);
+        c1.setAttribute('visible', false);
+        c2.setAttribute('visible', false);
+        c3.setAttribute('visible', false);
+        c4.setAttribute('visible', false);
+        c5.setAttribute('visible', false);
+        c6.setAttribute('visible', false);
+        c7.setAttribute('visible', false);
     }
 
     function updateSpherePosition(){
