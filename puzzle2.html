@@ -47,7 +47,6 @@
                     <a-box color="orange" class='table' opacity='0.5' height="2" width="2" rotation="0 0 0" depth="0.01" position="-1.5 -1 0"></a-box>
                     <a-box color="orange" class='table' opacity='0.5' height="1" width="1" rotation="0 0 0" depth="0.01" position="0 -1.5 0"></a-box>
                 </a-entity>
-                
             </a-entity>
         
             <!--pezzi sparsi-->     
@@ -56,18 +55,18 @@
                 <a-box id='pinkPiece' class='piece' color="pink" height="1" width="1" depth="0.3" rotation="0 0 0" position="-2 -3.5 -5" value='361' ></a-box>
                 <a-box  id='redPiece' class='piece' color="red" height="2" width="2" depth="0.3" rotation="0 0 0" position="1 5.5 -5" value='361'></a-box> 
                 <a-box  id='greyPiece' class='piece' color="grey" height="2" width="1" depth="0.3" rotation="0 0 90" position="5 5.5 -5" value='90'></a-box> 
-                <a-box  id='violetPiece' class='piece' color="violet" height="3" width="1" depth="0.3" rotation="0 0 0" position="-5 -3.5 -5" value='0'></a-box> 
-                <a-entity id='bluePiece' color='blue' class='piece' position="3 -3.5 -5" rotation='0 0 90' value='180'>
-                    <a-box color="blue" class='piece'  height="2" width="1" depth="0.3" rotation="0 0 0" position="0 0 0"></a-box>
-                    <a-box color="blue" class='piece' height="1" width="1" depth="0.3" rotation="0 0 0" position="-1 0.5 0"></a-box>
+                <a-box  id='violetPiece' class='piece' color="violet" height="3" width="1" depth="0.3" rotation="0 0 0" position="-5 -3 -5" value='0'></a-box> 
+                <a-entity id='bluePiece' color='blue' class='piece' position="5 -5 -5" rotation='0 0 90' value='90'>
+                    <a-box color="blue" class='piece'  height="2" width="1" depth="0.3" rotation="0 0 0" position="2 2 0"></a-box>
+                    <a-box color="blue" class='piece' height="1" width="1" depth="0.3" rotation="0 0 0" position="1 1.5 0"></a-box>
                 </a-entity>
-                <a-entity id='greenPiece' color='green' class='piece' position="-4 5 -5" rotation='0 0 0' value='270'><!-- controllare ROTAZIONE!!!!-->
+                <a-entity id='greenPiece' color='green' class='piece' position="-4 5 -5" rotation='0 0 0' value='0'>
                     <a-box color="green" class='piece'  height="2" width="1" depth="0.3" rotation="0 0 0" position="0 0 0"></a-box>
-                    <a-box color="green" class='piece'  height="1" width="1" depth="0.3" rotation="0 0 0" position="-1 0.5 0"></a-box>
+                    <a-box color="green" class='piece'  height="1" width="1" depth="0.3" rotation="0 0 0" position="1 0.5 0"></a-box>
                 </a-entity>
-                <a-entity id='orangePiece' color='orange' class='piece' position="-4.5 1 -5" rotation='0 0 90' value='270'><!-- controllare ROTAZIONE!!!!-->
-                    <a-box color="orange" class='piece'  height="2" width="2" depth="0.3" rotation="0 0 0" position="0 0 0"></a-box>
-                    <a-box color="orange" class='piece' height="1" width="1" depth="0.3" rotation="0 0 0" position="-1.5 0.5 0"></a-box>
+                <a-entity id='orangePiece' color='orange' class='piece' position="-5.5 2.5 -5" rotation='0 0 90' value='90'>
+                    <a-box color="orange" class='piece'  height="2" width="2" depth="0.3" rotation="0 0 0" position="-1.5 -1 0"></a-box>
+                    <a-box color="orange" class='piece' height="1" width="1" depth="0.3" rotation="0 0 0" position="0 -1.5 0"></a-box>
                 </a-entity>
             </a-entity>
             
@@ -213,7 +212,18 @@
             objects.removeChild(pieces[focused]);
             raycaster.appendChild(pieces[focused]);
             pieces[focused].setAttribute('scale', '0.6 0.6 0.6');
-            pieces[focused].setAttribute('position', '0 0 -4.2');
+            if(pieces[focused].getAttribute('color')=='orange'){
+                pieces[focused].setAttribute('position', '-0.5 0.75 -4.2');
+            }
+            else if(pieces[focused].getAttribute('color')=='green'){
+                pieces[focused].setAttribute('position', '0 -0.25 -4.2'); 
+            }
+            else if(pieces[focused].getAttribute('color')=='blue'){
+                pieces[focused].setAttribute('position', '0.95 -1.1 -4.2');
+            }
+            else{
+                pieces[focused].setAttribute('position', '0 0 -4.2');
+            }
             controller.addEventListener('trackpadup', doTrackpadUp);
             scene.addEventListener('trackpadUpFinished', removeListeners);
         })
@@ -226,7 +236,7 @@
         
         //funzione per quando rilascio il trackpad, deve controllare se sono o no sull'oggetto desideraro. nel caso lascio giù l'oggetto, altrimenti lo faccio tornare alla posizione iniziale. alla fine emette un trackpadUpFinisced sulla scena.
         function doTrackpadUp(){
-            console.log('hai rilasciato il trackpad e sei nella funzione dotrackpadup e table focused = ' + tableFocused[focused] + ' e focused = ' + focused);
+            console.log('hai rilasciato il trackpad e sei nella funzione dotrackpadup e table focused = ' + tableFocused[focused] + ' e focused = ' + focused +' e pieces[focused] = ' + pieces[focused]);
             raycaster.removeChild(pieces[focused]);
             pieces[focused].setAttribute('scale','1 1 1');
             if(tableFocused[focused]==true && checkRotation()){//se posto ok + aggioungere funzione checkrotation
