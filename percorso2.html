@@ -60,7 +60,7 @@
     draggableObj.setAttribute('rotation','0 0 0');
     draggableObj.setAttribute('visible',false);
     draggableObj.setAttribute("id", "draggableObj");
-    draggableObj.setAttribute('position','0  0 -6.5');
+    draggableObj.setAttribute('position','-0.1  0 -6.5');
 
     var stats=document.querySelector('#stats');
     var countCheckpoints=0;
@@ -89,8 +89,8 @@
     path[2]=c3;
     path[3]=c4;
     path[4]=c5;
-    path[5]=c5;
-    path[6]=c5;
+    path[5]=c6;
+    path[6]=c7;
     
     var finalText=document.querySelector("#finalText");
     var endingPoint=document.querySelector("#endingPoint");
@@ -167,8 +167,9 @@
         spStop.setAttribute('radius','1');
         spStop.setAttribute('opacity','0.3');
         spStop.setAttribute('visible',true);
+        spStop.setAttribute('class','clickable');
         startingObj.setAttribute('visible',true);
-            console.log("HTML: "+startingPoint);
+        startingObj.setAttribute('class','clickable');
         startingObj.setAttribute('position',startingPoint);
         for(var i=0; i<7; i++){
                 path[i].setAttribute('color', '#7a0000');
@@ -209,10 +210,12 @@
         spStop.setAttribute('color','#ffbf00');
         spStop.setAttribute('opacity','0.3');
         draggableObj.setAttribute('visible',false);
+        spStop.setAttribute('class','clickable');
         spStop.setAttribute('radius','0.7');
         spStop.setAttribute('position', spPosition);  
         startingObj.setAttribute('position', spPosition);
         startingObj.setAttribute('visible', true);
+        startingObj.setAttribute('class', 'clickable');
         controller.removeChild(r1);
         scene.emit('updateFinished');
     }
@@ -220,9 +223,21 @@
     function lookForPosition(){
         console.log('look for position');
         r1.addEventListener('raycaster-intersection',function(e){
-            rayPosition=e.detail.intersections[0].point;
+            for(var i=0; i<e.detail.intersections.length; i++){
+                if( checkIfContained(path, e.detail.els[i]) )
+                   rayPosition=e.detail.intersections[i].point;
+            }
             scene.emit('rayPositionUpdated');
         })
+    }
+    
+    function checkIfContained(a, obj) {
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] === obj) {
+            return true;
+        }
+    }
+        return false;
     }
 
     function doTrackpadUp(){
@@ -243,7 +258,9 @@
         if(focused){
             correctSound.components.sound.playSound();
             spStop.setAttribute("visible", false);
+            spStop.setAttribute('class', null);
             startingObj.setAttribute('visible', false);
+            startingObj.setAttribute('class',null);
             draggableObj.setAttribute('visible', true);
             info.setAttribute('visible',false);
 
