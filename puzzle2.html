@@ -27,7 +27,7 @@
         
             <a-text id='finalText'value='wow' color='red' position='-3 2 -3' visible='false'></a-text>
         
-            <a-text id='contatoreErrori' value='numero di errori commessi: 0' position='-1.5 -2.5 -5' color='red'></a-text>
+            <a-text id='contatoreErrori' value='Errori: 0' font="exo2semibold" position='-0.5 -2.5 -5' color='red'></a-text>
                 
             <a-entity id="table" class='clickable'  position="0 0 -5" >
                 <a-box id='yellow' class='table' color="yellow" opacity='0.5' height="1" width="4" rotation="0 0 0" depth="0.01" position="-0.5 2.5 0"></a-box>
@@ -249,7 +249,7 @@
                 console.log('posizione dove dovrebbe essere rilasciato l oggetto: ' + textPosition.getAttribute('value') );
                 pieces[focused].setAttribute('position', textPosition.getAttribute('value'));
                 errorCounter++;
-                errorCountText.setAttribute('value', 'numero di errori commessi: '+ errorCounter);
+                errorCountText.setAttribute('value', 'Errori: '+ errorCounter);
             }
             scene.emit('trackpadUpFinished');
         }
@@ -265,7 +265,7 @@
             errorCountText.setAttribute('visible',false);
             mickey.setAttribute('visible',true);
             endingText.setAttribute('visible',true);
-            endingText.setAttribute('value', 'Complimenti, hai finito il livello e hai commesso '+ errorCounter + ' errori');
+            endingText.setAttribute('value', 'Complimenti, hai completato il livello! \n  Hai commesso '+ errorCounter + ' errori');
             winnerSound.components.sound.playSound();
         } 
           
